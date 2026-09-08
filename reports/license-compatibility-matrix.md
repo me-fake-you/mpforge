@@ -44,6 +44,14 @@ Available, AGPL, or inherited `@wemd/server` component may be distributed.
 
 ## Global release rules
 
+### 2026-09-08 file-level correction: tiny-oss
+
+`tiny-oss@0.5.1` is **excluded**. Its package manifest declares MIT and includes `vendor` in its published files, but the complete `vendor/digest.js:1-20` license block declares GPL-3.0-or-later for that file (copyright 2011–2012, 2014 Jean-Christophe Sirot). The digest implementation was present in the generated Aliyun uploader bundle. The outer package label therefore does not support distributing that bundle under the project's permissive-only release policy.
+
+The dependency and its exclusively reachable graph have been removed from the development manifest and lockfile. The release metadata policy now blocks `tiny-oss` before evaluating a package-level license; tests cover versioned generator identities, plain verifier names and package URLs. The updated verifier rejects the earlier candidate SBOM even though it recorded MIT for this component. This deliberately invalidates the previous candidate's license clearance.
+
+Dependency remediation and policy tests: `PASS`. Final source/runtime SBOM and rebuilt Web/Windows artifact reconciliation: `PENDING_REBUILD_AFTER_TINY_OSS_REMOVAL`. No earlier binary or SBOM may be reused as license-cleared release evidence.
+
 - GPL, LGPL, AGPL, Source Available, `NOASSERTION`, `UNLICENSED`, custom
   restrictions, or unresolved no-license material block release unless the
   component is demonstrably external and not distributed.
@@ -51,7 +59,7 @@ Available, AGPL, or inherited `@wemd/server` component may be distributed.
   evidence conflicts with it.
 - `Unknown` is acceptable only as raw package metadata when a retained license
   file supports a documented SPDX conclusion.
-- This matrix was reconciled with both SBOMs after the clean source tree and
-  final runtime artifacts were built.
+- Reconcile this matrix with regenerated SBOMs and rebuilt artifacts after the
+  tiny-oss removal; package-level labels alone did not detect the bundled GPL file.
 
-Current final-SBOM reconciliation status: `PASS`.
+Current final-SBOM reconciliation status: `PENDING_REBUILD_AFTER_TINY_OSS_REMOVAL`.

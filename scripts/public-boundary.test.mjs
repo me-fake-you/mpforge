@@ -1,11 +1,13 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
+import { createRequire } from "node:module";
 import {
   existsSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
+  readdirSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
@@ -13,6 +15,7 @@ import path from "node:path";
 import test from "node:test";
 import {
   auditArtifactDirectory,
+  auditAsarFile,
   auditExportInventory,
   auditPublicBoundary,
   auditReadmeLinks,
@@ -163,6 +166,99 @@ test("public GitHub bot identities are exact exceptions, not a domain-wide email
       policies,
     );
     assert.ok(findings.some((finding) => finding.rule === "private-email"));
+  }
+});
+
+test("reviewed dependency comments and generated parser data use exact email exceptions", () => {
+  for (const value of ["jhruby.web@gmail.com", "O.KmQpOAN@wO.KxQdO"]) {
+    const findings = validateSourceBuffer(
+      "docs/notice.md",
+      Buffer.from(value),
+      policies,
+    );
+    assert.equal(
+      findings.some((finding) => finding.rule === "private-email"),
+      false,
+    );
+  }
+  for (const value of [
+    ["unreviewed", "gmail.com"].join("@"),
+    ["jhruby.web", "gmail.com.invalid"].join("@"),
+    ["sirot", "chelonix.com"].join("@"),
+  ]) {
+    const findings = validateSourceBuffer(
+      "docs/notice.md",
+      Buffer.from(value),
+      policies,
+    );
+    assert.ok(findings.some((finding) => finding.rule === "private-email"));
+  }
+});
+
+test("vendored digest GPL code is rejected in actual Web and loose release artifacts", () => {
+  withRepository((root) => {
+    const fixture =
+      "/*! This file is part of digest.js */\nexport const fixture = true;\n";
+    write(root, "apps/web/dist/assets/uploader.js", fixture);
+    const web = auditWebDist(root, policies);
+    assert.equal(web.status, "FAIL");
+    assert.ok(
+      web.findings.some(
+        (finding) => finding.rule === "excluded-vendored-gpl-digest",
+      ),
+    );
+    const artifacts = auditArtifactDirectory(
+      path.join(root, "apps/web/dist"),
+      root,
+      policies,
+    );
+    assert.ok(
+      artifacts.some((check) =>
+        check.findings.some(
+          (finding) => finding.rule === "excluded-vendored-gpl-digest",
+        ),
+      ),
+    );
+  });
+});
+
+test("ASAR GPL inspection normalizes Windows entries and skips .js-named directories", async () => {
+  const packageRoot = path.join(repositoryRoot, "node_modules/.pnpm");
+  const asarDirectory = readdirSync(packageRoot).find((entry) =>
+    entry.startsWith("@electron+asar@"),
+  );
+  assert.ok(
+    asarDirectory,
+    "project-local ASAR library is required for artifact regression",
+  );
+  const asar = createRequire(import.meta.url)(
+    path.join(packageRoot, asarDirectory, "node_modules/@electron/asar"),
+  );
+  const root = initializeRepository();
+  try {
+    write(root, "fixture/highlight.js/safe.js", "export const safe = true;\n");
+    write(
+      root,
+      "fixture/assets/vendor.js",
+      "/*! This file is part of digest.js */\n",
+    );
+    const archive = path.join(root, "fixture.asar");
+    await asar.createPackage(path.join(root, "fixture"), archive);
+    const report = auditAsarFile(archive, repositoryRoot, policies);
+    assert.equal(report.status, "FAIL");
+    assert.equal(
+      report.findings.filter(
+        (entry) => entry.rule === "excluded-vendored-gpl-digest",
+      ).length,
+      1,
+    );
+    assert.equal(
+      report.findings.filter((entry) => entry.rule === "asar-read-error")
+        .length,
+      0,
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
   }
 });
 

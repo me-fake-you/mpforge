@@ -21,9 +21,30 @@ export interface ImageUploader {
  * 图床配置
  */
 export interface ImageHostConfig {
-  type: "official" | "qiniu" | "aliyun" | "tencent" | "s3";
+  type: "official" | "qiniu" | "tencent" | "s3";
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   config?: any;
+}
+
+export function isSupportedImageHostType(
+  value: unknown,
+): value is ImageHostConfig["type"] {
+  return (
+    value === "official" ||
+    value === "qiniu" ||
+    value === "tencent" ||
+    value === "s3"
+  );
+}
+
+export function assertSupportedImageHostType(
+  value: unknown,
+): asserts value is ImageHostConfig["type"] {
+  if (!isSupportedImageHostType(value)) {
+    throw new Error(
+      "此图床类型已停用或不受支持，请在图床设置中明确选择其他服务。旧配置不会用于上传。",
+    );
+  }
 }
 
 /**
@@ -32,10 +53,9 @@ export interface ImageHostConfig {
  */
 export class ImageHostManager {
   private uploaderPromise: Promise<ImageUploader>;
-  private config: ImageHostConfig;
-
   constructor(config: ImageHostConfig) {
-    this.config = config;
+    // Validate the discriminator before touching provider-specific credentials.
+    assertSupportedImageHostType(config?.type);
     this.uploaderPromise = this.createUploader(config);
   }
 
@@ -57,10 +77,6 @@ export class ImageHostManager {
         const { QiniuUploader } = await import("./uploaders/QiniuUploader");
         return new QiniuUploader(config.config);
       }
-      case "aliyun": {
-        const { AliyunUploader } = await import("./uploaders/AliyunUploader");
-        return new AliyunUploader(config.config);
-      }
       case "tencent": {
         const { TencentUploader } = await import("./uploaders/TencentUploader");
         return new TencentUploader(config.config);
@@ -70,10 +86,7 @@ export class ImageHostManager {
         return new S3Uploader(config.config);
       }
       default: {
-        const { OfficialUploader } = await import(
-          "./uploaders/OfficialUploader"
-        );
-        return new OfficialUploader(config.config);
+        throw new Error("Unsupported image host type");
       }
     }
   }

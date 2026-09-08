@@ -1,4 +1,8 @@
-import { ImageHostManager, type ImageHostConfig } from "./ImageUploader";
+import {
+  ImageHostManager,
+  assertSupportedImageHostType,
+  type ImageHostConfig,
+} from "./ImageUploader";
 import {
   type ImageCompressionDependencies,
   type PrepareImageForUploadOptions,
@@ -29,11 +33,14 @@ export function getStoredImageHostConfig(): ImageHostConfig {
     return { type: "official" };
   }
 
+  let config: ImageHostConfig;
   try {
-    return JSON.parse(configStr) as ImageHostConfig;
+    config = JSON.parse(configStr) as ImageHostConfig;
   } catch {
-    return { type: "official" };
+    throw new Error("图床配置无法读取，请在图床设置中重新选择服务。");
   }
+  assertSupportedImageHostType(config?.type);
+  return config;
 }
 
 export async function uploadEditorImage(

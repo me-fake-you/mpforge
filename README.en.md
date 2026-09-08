@@ -14,11 +14,13 @@ MPForge treats an article as a versionable project rather than a single editor d
 
 ![MPForge Mock Demo](artifacts/evidence/round-4/demo.gif)
 
-[Online Mock Demo](https://me-fake-you.github.io/mpforge/) · [v0.1.0 Release](https://github.com/me-fake-you/mpforge/releases/tag/v0.1.0) · [Windows installer](https://github.com/me-fake-you/mpforge/releases/download/v0.1.0/MPForge.Setup.0.1.0.exe) · [Windows portable ZIP](https://github.com/me-fake-you/mpforge/releases/download/v0.1.0/MPForge-Portable-0.1.0-win-x64.zip)
+[Online Mock Demo](https://me-fake-you.github.io/mpforge/) · [Release status](https://github.com/me-fake-you/mpforge/releases)
+
+Windows installer and portable candidates pass local startup checks but are not publicly released. Electron includes an LGPL-2.1-or-later FFmpeg shared library. Authorization and delivery of its corresponding-source compliance attachments are still pending, so the v0.1.0 Release remains blocked. Source and browser-only Demo do not distribute that DLL.
 
 ## Try it in 30 seconds
 
-Requirements: Node.js 22+ and pnpm 9. All dependencies and caches created by the project-local setup stay under the checkout.
+Requirements: Node.js 22.12+ and pnpm 9. All dependencies and caches created by the project-local setup stay under the checkout.
 
 ```bash
 pnpm install --frozen-lockfile
@@ -27,7 +29,7 @@ pnpm demo
 
 Demo mode seeds an original example into browser storage, displays a permanent `DEMO / MOCK` banner, and offers a browser-memory Mock WeChat flow. It does not read real account environment variables or expose the Real Draft action.
 
-The online Demo is browser-only and Mock-only. Windows v0.1.0 is unsigned, so Windows may show a security warning. Download from the [Release page](https://github.com/me-fake-you/mpforge/releases/tag/v0.1.0) and verify the file against its published `SHA256SUMS`.
+The online Demo is browser-only and Mock-only. Windows candidates are unsigned, so Windows may show a security warning. When downloads become available, the [Release page](https://github.com/me-fake-you/mpforge/releases) will include `SHA256SUMS`, SBOMs and third-party license materials. A successful local build is not evidence of a published Release.
 
 ## What v0.1.0 includes
 

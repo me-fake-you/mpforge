@@ -903,6 +903,32 @@ export function auditAsarFile(asarPath, root, policies) {
     findings.push(
       ...artifactEntryFindings(entry, policies.denylist, { asar: true }),
     );
+    if (/\.(?:js|cjs|html)$/iu.test(entry)) {
+      try {
+        const relativeEntry = entry.replace(/^[/\\]+/u, "");
+        const information = asar.statFile(asarPath, relativeEntry, false);
+        if (information.files || information.link) continue;
+        const buffer = asar.extractFile(asarPath, relativeEntry);
+        for (const finding of scanTextForPublicBoundary(
+          buffer.toString("utf8"),
+          entry.replace(/^[/\\]+/u, "").replaceAll("\\", "/"),
+          policies.denylist,
+        )) {
+          if (finding.rule !== "excluded-vendored-gpl-digest") continue;
+          findings.push({
+            path: entry,
+            rule: finding.rule,
+            detail: "excluded vendored GPL implementation in packaged content",
+          });
+        }
+      } catch (error) {
+        findings.push({
+          path: entry,
+          rule: "asar-read-error",
+          detail: error.message,
+        });
+      }
+    }
     if (!entry.toLowerCase().endsWith(".map")) continue;
     try {
       findings.push(

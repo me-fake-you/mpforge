@@ -2,7 +2,39 @@
 
 ## Current release decision
 
-`LOCAL_REGRESSION_PASSED_PUBLIC_EXPORT_PENDING`
+`PUBLIC_SOURCE_REPAIR_IN_PROGRESS_WINDOWS_LICENSE_ATTACHMENT_AUTHORIZATION_PENDING`
+
+The source repository is public. Subsequent artifact-level inspection supersedes
+the earlier candidate license decision: `tiny-oss@0.5.1` contains a GPL-licensed
+vendored implementation despite its MIT package label. Its optional Aliyun
+uploader, dependency and exclusive transitive packages have now been removed.
+The runtime policy rejects reintroduction; Web/loose-artifact/ASAR scans also
+reject its embedded copyright marker. No Pages artifact containing it was
+deployed, and no Windows Release was created. Earlier local candidates are
+retained privately, not authorized for distribution.
+
+The new Web build and unsigned Windows installer/portable rebuild pass. Actual
+portable startup, installation, installed Demo and uninstall pass with Electron
+44.2.0, zero external requests and zero visible privacy findings. The rebuilt
+ASAR scan covers 5,459 entries and reports zero findings. Retired image-host
+configuration tests pass without reading old credentials or falling back to
+another provider. Final independent-clone and public CI checks remain pending
+for this updated source checkpoint.
+
+A separate native runtime review identifies Electron's `ffmpeg.dll` as
+LGPL-2.1-or-later, not MIT. Its precise upstream source, DLL and license hashes,
+dynamic-link setting and disabled GPL/nonfree configuration are recorded in
+`docs/licenses/electron-44.2.0-native-review.json`. Windows metadata generation
+and verification intentionally fail closed until corresponding-source
+attachments are authorized and implemented. The owner was asked for this
+narrow exception to the local-only third-party-download policy. No authorization
+has yet been recorded. Source-only metadata and browser-only Demo do not
+distribute this DLL.
+
+Bridge test: [Issue 7](https://github.com/me-fake-you/mpforge/issues/7),
+`PENDING_CHATGPT_ACK`; creating an issue is not round-trip evidence.
+
+## Earlier checkpoints (historical, superseded where stated)
 
 The 2026-09-04 source, unit/integration/Web/E2E, Mock, installer, and boundary
 checks passed locally. The 2026-09-08 pre-publication audit found that the
@@ -11,8 +43,8 @@ npm registry returned 15 high and 3 critical production advisory findings in
 the candidate dependency graph. Those results supersede the earlier broad
 statement that every local release gate had passed.
 
-The public repository has been created, but no source, tag, installer, or Release
-has been uploaded at this checkpoint. The updated production graph passes the
+At the earlier pre-upload checkpoint the public repository had been created,
+but no source, tag, installer, or Release had been uploaded. The updated production graph passes the
 official high-severity threshold (0 critical, 0 high, 1 disclosed moderate).
 A separate shipped-runtime check then found the inherited Electron 28.3.3 had
 7 high advisories. It is now pinned to supported Electron 44.2.0; the official

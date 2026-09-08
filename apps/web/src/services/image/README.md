@@ -1,6 +1,6 @@
 # 图床支持
 
-WeMD 当前内置 5 类图床，均通过 `ImageHostManager` 统一管理。
+MPForge 当前支持 4 类图床，均通过 `ImageHostManager` 统一管理。
 
 ## 支持的图床
 
@@ -8,7 +8,6 @@ WeMD 当前内置 5 类图床，均通过 `ImageHostManager` 统一管理。
 | -------------- | -------- | -------------------------------------------- |
 | 外部自托管端点 | ⭐⭐     | 必须显式配置；MPForge 不内置上传服务         |
 | 七牛云         | ⭐⭐⭐   | 适合国内常见对象存储场景                     |
-| 阿里云 OSS     | ⭐⭐⭐   | 阿里云对象存储                               |
 | 腾讯云 COS     | ⭐⭐⭐   | 腾讯云对象存储                               |
 | S3 兼容        | ⭐⭐⭐⭐ | 兼容 AWS S3 / Cloudflare R2 / MinIO / Spaces |
 
@@ -30,18 +29,7 @@ WeMD 当前内置 5 类图床，均通过 `ImageHostManager` 统一管理。
 - `domain`
 - `region`（可选，默认 `z0`）
 
-### 3. 阿里云 OSS
-
-需要填写：
-
-- `accessKeyId`
-- `accessKeySecret`
-- `bucket`
-- `region`
-- `cdnHost`（可选）
-- `path`（可选）
-
-### 4. 腾讯云 COS
+### 3. 腾讯云 COS
 
 需要填写：
 
@@ -52,7 +40,7 @@ WeMD 当前内置 5 类图床，均通过 `ImageHostManager` 统一管理。
 - `cdnHost`（可选）
 - `path`（可选）
 
-### 5. S3 兼容
+### 4. S3 兼容
 
 需要填写：
 
@@ -80,6 +68,10 @@ const url = await manager.upload(file);
 ```
 
 ## 常见问题
+
+### Q: 旧版本的图床选择不再受支持怎么办？
+
+上传会停止，且不会将旧凭据交给其他服务。请在设置中明确选择并启用一个受支持的图床。打开设置或切换浏览标签不会自动启用其他图床，也不会覆盖原有配置。
 
 ### Q: 是否支持 PicGo / PicList？
 

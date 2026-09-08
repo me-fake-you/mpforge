@@ -52,3 +52,29 @@ The public repository is created as a clean, allowlisted source history. This pr
 The Round 3 release-ready SVG and derived PNG are project-generated and covered by the asset manifest, content-addressed original, deterministic transformation record, and the latest human approval event. The earlier approval was invalidated when the lint evidence changed; the latest approval binds the current manifest and lint hashes. This is evidence for the named local fixture, not an agent-granted legal-rights opinion.
 
 Windows pnpm junctions under local `node_modules` are installation links only. They are not product assets and do not add a product-license obligation.
+
+## September 8 artifact-level license correction
+
+The inherited optional Aliyun uploader depended on `tiny-oss@0.5.1`, whose
+package metadata says MIT but whose shipped `vendor/digest.js` explicitly
+declares GPL-3.0-or-later. Package metadata was not sufficient evidence. The
+public release excludes this dependency and its Aliyun uploader integration;
+the release metadata policy rejects its reintroduction. Earlier local builds
+and source-candidate SBOMs that included it are superseded and must not be
+distributed as v0.1.0. No GPL copyright block is deleted to disguise that code.
+
+The artifact email scanner retains two narrowly reviewed exact exceptions:
+`jhruby.web@gmail.com` is the preserved Jan Hruby author comment in
+CryptoJS 4.2.0 `mode-ctr-gladman.js` (MIT), and `O.KmQpOAN@wO.KxQdO` is not an
+email address but a substring of the generated LR parser states in
+`@lezer/php@1.0.5/src/parser.js` (MIT). These exceptions neither allow arbitrary
+addresses on those domains nor waive any credential or source-path check.
+
+Electron's MIT package license describes Electron itself, not every bundled
+native component. Its Windows `ffmpeg.dll` is LGPL-2.1-or-later and remains a
+replaceable shared library. Exact source and build configuration evidence is
+tracked in `docs/licenses/electron-44.2.0-native-review.json`. Distribution of
+Windows artifacts is blocked until the corresponding-source attachment is
+authorized and delivered with the required notices; no native LGPL exception
+is silently granted by the npm license label. The browser-only Demo does not
+include this DLL. See the [FFmpeg distribution checklist](https://ffmpeg.org/legal.html).

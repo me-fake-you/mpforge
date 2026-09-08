@@ -18,6 +18,7 @@ import {
 import {
   concludeRuntimeLicense,
   spdxVerificationCode,
+  requireReviewedElectronNativeDistribution,
 } from "./release-metadata-policy.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -392,6 +393,17 @@ function createRuntimeSbom() {
 }
 
 const commit = git(["rev-parse", "HEAD"]);
+if (includeWindowsArtifacts) {
+  // Run before writing any output so pending native-license obligations cannot
+  // create a partial new set of release-ready metadata.
+  const electron = readJson(
+    path.join(root, "apps/electron/node_modules/electron/package.json"),
+  );
+  const evidence = readJson(
+    path.join(root, "docs/licenses/electron-44.2.0-native-review.json"),
+  );
+  requireReviewedElectronNativeDistribution(electron.version, evidence);
+}
 writeJson("sbom-source.spdx.json", createSourceSbom());
 writeJson("sbom-runtime.cdx.json", createRuntimeSbom());
 writeJson("BUILD_INFO.json", {

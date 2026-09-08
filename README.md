@@ -14,7 +14,9 @@ MPForge 不是只保存一段文本的普通 Markdown 编辑器。它把文章�
 
 ![MPForge Mock Demo](artifacts/evidence/round-4/demo.gif)
 
-[在线 Mock Demo](https://me-fake-you.github.io/mpforge/) · [v0.1.0 Release](https://github.com/me-fake-you/mpforge/releases/tag/v0.1.0) · [Windows 安装包](https://github.com/me-fake-you/mpforge/releases/download/v0.1.0/MPForge.Setup.0.1.0.exe) · [Windows 便携包](https://github.com/me-fake-you/mpforge/releases/download/v0.1.0/MPForge-Portable-0.1.0-win-x64.zip)
+[在线 Mock Demo](https://me-fake-you.github.io/mpforge/) · [Release 状态](https://github.com/me-fake-you/mpforge/releases)
+
+Windows 安装包与便携包已通过本地运行测试，但尚未公开发布。Electron 内的 FFmpeg 动态库采用 LGPL-2.1-or-later；其对应源码附件的发布授权与合规交付尚待完成，因此 v0.1.0 Release 保持阻断。源码与纯 Web Demo 不分发该动态库。
 
 ## 30 秒体验
 
@@ -27,7 +29,7 @@ pnpm demo
 
 Demo 会向浏览器存储放入一篇原创示例，始终显示 `DEMO / MOCK` 标识，并使用浏览器内存中的 Mock WeChat。它不读取真实账号环境变量，也不显示真实草稿执行入口。
 
-在线 Demo 固定使用浏览器内 Mock；Windows v0.1.0 为未签名构建，Windows 可能显示安全提醒。请从 [Release 页面](https://github.com/me-fake-you/mpforge/releases/tag/v0.1.0) 下载并使用同页 `SHA256SUMS` 校验。
+在线 Demo 固定使用浏览器内 Mock；Windows 候选包为未签名构建，Windows 可能显示安全提醒。正式提供下载时，[Release 页面](https://github.com/me-fake-you/mpforge/releases)将同时提供 `SHA256SUMS`、SBOM 和第三方许可材料。不要把本地构建成功视为已经发布。
 
 ## v0.1.0 能做什么
 

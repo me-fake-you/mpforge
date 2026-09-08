@@ -10,7 +10,7 @@ import {
 import type { ImageHostConfig } from "../../services/image/ImageUploader";
 
 export interface HostTabProps {
-  activeType: ImageHostConfig["type"];
+  activeType: ImageHostConfig["type"] | null;
   viewingType: ImageHostConfig["type"];
   onTabChange: (type: ImageHostConfig["type"]) => void;
 }
@@ -71,15 +71,6 @@ export const HostTabs = ({
         )}
       </button>
       <button
-        className={`host-tab ${viewingType === "aliyun" ? "active" : ""}`}
-        onClick={() => onTabChange("aliyun")}
-      >
-        阿里云 OSS
-        {activeType === "aliyun" && (
-          <span className="tab-active-badge">使用中</span>
-        )}
-      </button>
-      <button
         className={`host-tab ${viewingType === "tencent" ? "active" : ""}`}
         onClick={() => onTabChange("tencent")}
       >
@@ -102,7 +93,7 @@ export const HostTabs = ({
 };
 
 interface OfficialPanelProps {
-  activeType: ImageHostConfig["type"];
+  activeType: ImageHostConfig["type"] | null;
   viewingConfig: ImageHostConfig;
   testResult: HostTestResult | null;
   onConfigChange: (key: string, value: string) => void;
@@ -202,7 +193,7 @@ export const OfficialHostPanel = ({
 };
 
 interface HostConfigPanelProps {
-  activeType: ImageHostConfig["type"];
+  activeType: ImageHostConfig["type"] | null;
   viewingConfig: ImageHostConfig;
   testResult: HostTestResult | null;
   onConfigChange: (key: string, value: string) => void;
@@ -300,88 +291,6 @@ export const QiniuPanel = ({
       {activeType !== "qiniu" && (
         <button className="btn-activate" onClick={() => onActivate("qiniu")}>
           启用七牛云图床
-        </button>
-      )}
-    </div>
-  );
-};
-
-export const AliyunPanel = ({
-  activeType,
-  viewingConfig,
-  testResult,
-  onConfigChange,
-  onTestConnection,
-  onActivate,
-}: HostConfigPanelProps) => {
-  return (
-    <div className="host-config">
-      {activeType === "aliyun" && (
-        <div className="active-status">
-          <span className="pulsing-dot"></span>
-          <span>当前使用中</span>
-        </div>
-      )}
-      <div className="config-field">
-        <label>AccessKey ID</label>
-        <input
-          type="text"
-          placeholder="从阿里云控制台获取"
-          value={viewingConfig.config?.accessKeyId || ""}
-          onChange={(e) => onConfigChange("accessKeyId", e.target.value)}
-        />
-      </div>
-      <div className="config-field">
-        <label>AccessKey Secret</label>
-        <input
-          type="password"
-          placeholder="从阿里云控制台获取"
-          value={viewingConfig.config?.accessKeySecret || ""}
-          onChange={(e) => onConfigChange("accessKeySecret", e.target.value)}
-        />
-      </div>
-      <div className="config-field">
-        <label>Bucket 名称</label>
-        <input
-          type="text"
-          placeholder="your-bucket"
-          value={viewingConfig.config?.bucket || ""}
-          onChange={(e) => onConfigChange("bucket", e.target.value)}
-        />
-      </div>
-      <div className="config-field">
-        <label>地域节点</label>
-        <input
-          type="text"
-          placeholder="oss-cn-hangzhou"
-          value={viewingConfig.config?.region || ""}
-          onChange={(e) => onConfigChange("region", e.target.value)}
-        />
-        <small>例如：oss-cn-hangzhou（杭州）、oss-cn-beijing（北京）</small>
-      </div>
-      <div className="config-field">
-        <label>自定义域名（可选）</label>
-        <input
-          type="text"
-          placeholder="https://cdn.example.com"
-          value={viewingConfig.config?.endpoint || ""}
-          onChange={(e) => onConfigChange("endpoint", e.target.value)}
-        />
-      </div>
-      <div className="config-footer">
-        <small>
-          <a href="https://oss.console.aliyun.com/bucket" target="_blank">
-            阿里云 OSS 控制台
-          </a>
-        </small>
-        {testResult && <TestResultMessage result={testResult} />}
-        <button className="btn-test-connection" onClick={onTestConnection}>
-          测试连接
-        </button>
-      </div>
-      {activeType !== "aliyun" && (
-        <button className="btn-activate" onClick={() => onActivate("aliyun")}>
-          启用阿里云 OSS
         </button>
       )}
     </div>

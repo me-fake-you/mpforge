@@ -1,9 +1,11 @@
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import {
   concludeRuntimeLicense,
   spdxVerificationCode,
+  requireReviewedElectronNativeDistribution,
 } from "./release-metadata-policy.mjs";
 
 const directory = path.resolve(process.argv[2] ?? "release");
@@ -25,6 +27,22 @@ if (
   throw new Error("Release metadata does not identify one exact source commit");
 }
 const artifactNames = manifest.artifacts.map((item) => item.filename);
+if (
+  artifactNames.some((name) => name.startsWith("MPForge")) ||
+  runtime.components?.some((component) => component.name === "electron")
+) {
+  const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+  const evidence = JSON.parse(
+    readFileSync(
+      path.join(root, "docs/licenses/electron-44.2.0-native-review.json"),
+      "utf8",
+    ),
+  );
+  const electron = runtime.components?.find(
+    (component) => component.name === "electron",
+  );
+  requireReviewedElectronNativeDistribution(electron?.version, evidence);
+}
 if (new Set(artifactNames).size !== artifactNames.length)
   throw new Error("Duplicate artifact names");
 if (artifactNames.some((name) => name.startsWith("MPForge"))) {

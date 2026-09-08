@@ -12,7 +12,7 @@ node scripts/check-shipped-runtime.mjs
 SHA-256 of the audited local `pnpm-lock.yaml` bytes:
 
 ```text
-8636475fc4f9c3f100b2391a86279aec5271f40a83c08fb088818ae38bb7daa2
+8b21edab9c186ce6932a5466f6c9cc3f6efdb70e2f0759106d253015b9dfc932
 ```
 
 Git checkout line-ending conversion can change this file-byte hash; package versions and integrity records remain defined by the lockfile.
@@ -31,6 +31,18 @@ The earlier official audit reported 3 critical and 15 high findings. This update
 | linkify-it                             | 5.0.2                  |
 | dompurify                              | 3.4.15                 |
 | uuid, 11.x branch                      | 11.1.1                 |
+
+## File-level license conflict: tiny-oss removed
+
+The earlier license conclusion for `tiny-oss@0.5.1` is invalidated. Its package manifest declares MIT, but the complete license block at `vendor/digest.js:1-20` identifies the included digest implementation as GPL-3.0-or-later, with copyright attributed to Jean-Christophe Sirot (2011–2012, 2014). Its published package manifest includes the `vendor` directory. This conflict cannot be resolved by accepting the outer MIT label.
+
+The affected digest code was found in the generated Aliyun uploader bundle. This is a distribution blocker under MPForge's release policy, not an npm vulnerability advisory. The preceding npm audit counts did not establish license clearance.
+
+The direct `tiny-oss` dependency and its exclusively reachable dependencies (`md5`, `charenc`, `crypt`, `is-buffer`, and `object-assign`) have been removed from the development manifest and lockfile. Other locked versions and existing optional dependency records were preserved. The update and frozen-lockfile verification used only the project's local dependency store, without new downloads.
+
+`release-metadata-policy.mjs` now rejects `tiny-oss` identities before considering their declared license. Both the generator's versioned identity and the verifier's package name are covered; a changed version number or an MIT label cannot silently bypass the gate. Any future version requires a separate file-level review before policy approval.
+
+Verification: the three metadata-policy tests pass, and the updated verifier rejects the previous candidate SBOM containing `tiny-oss` with an explicit bundled-license-conflict error. The final source SBOM, Web bundle, Windows artifacts and artifact-license scans must be regenerated after the integration change; the earlier candidate's license clearance is not reusable.
 
 ## Shipped desktop runtime
 

@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "review_status": "PENDING_USER_SOURCE_ATTACHMENT_AUTHORIZATION",
+  "electron_version": "44.2.0",
+  "platform": "win32-x64",
+  "electron_own_code_license": "MIT",
+  "ffmpeg": {
+    "license": "LGPL-2.1-or-later",
+    "linkage": "dynamic",
+    "binary_path": "ffmpeg.dll",
+    "binary_sha256": "45c9e035d19ad0764100e9e3fbeb552b00d95a4ea20597627f9a91c404e79363",
+    "source_revision": "2b68d2babae73714846961fb0ee47e3b3d2e39a9",
+    "source_archive_url": "https://chromium.googlesource.com/chromium/third_party/ffmpeg/+archive/2b68d2babae73714846961fb0ee47e3b3d2e39a9.tar.gz",
+    "source_archive_sha256": "6cf108a3e151963644ac55d85769077b8cdbda327362bd09592be2080fcccfef",
+    "gpl_enabled": false,
+    "nonfree_enabled": false
+  },
+  "chromium": {
+    "version": "152.0.7977.76",
+    "notices_path": "LICENSES.chromium.html",
+    "notices_sha256": "7b328b8c7463ac9bfc7dc648c751533517c8441a0b5b21047d6c0b2620e60d70",
+    "dependency_source_url": "https://raw.githubusercontent.com/chromium/chromium/152.0.7977.76/DEPS"
+  },
+  "build_evidence": {
+    "release_args_url": "https://raw.githubusercontent.com/electron/electron/v44.2.0/build/args/release.gn",
+    "common_args_url": "https://raw.githubusercontent.com/electron/electron/v44.2.0/build/args/all.gn",
+    "patch_filename": "link_with_loader_path.patch",
+    "patch_sha256": "bc6cdc29ad4ec2641dd59b4c3a25375b9166c35e202e5122cb73190885ec647d"
+  },
+  "distribution_obligations_complete": false,
+  "same_release_source_asset": null,
+  "blocker": "Corresponding source archive, patch, build instructions and notices must be available with the release. Publishing the downloaded source archive requires the user's explicit exception to the local-only archive rule. This evidence record does not authorize redistribution or approve a license exception."
+}

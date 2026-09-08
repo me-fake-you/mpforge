@@ -17,6 +17,14 @@ const allowedLicenses = new Set([
 ]);
 
 export function concludeRuntimeLicense(value, component) {
+  // tiny-oss@0.5.1 bundles GPL-3.0-or-later vendor/digest.js despite its
+  // package-level MIT label. Keep this package blocked until a separate
+  // file-level license review explicitly approves a replacement version.
+  if (/^(?:pkg:npm\/)?tiny-oss(?:@|$)/u.test(String(component))) {
+    throw new Error(
+      `Blocked bundled license conflict for ${component}: tiny-oss includes GPL-3.0-or-later vendor/digest.js; its MIT package label is insufficient`,
+    );
+  }
   if (typeof value !== "string" || !value.trim()) {
     throw new Error(`Missing license evidence: ${component}`);
   }
@@ -41,4 +49,21 @@ export function spdxVerificationCode(fileSha1s) {
   return createHash("sha1")
     .update([...fileSha1s].sort().join(""))
     .digest("hex");
+}
+
+export function requireReviewedElectronNativeDistribution(version, evidence) {
+  if (
+    version !== "44.2.0" ||
+    evidence?.schema_version !== 1 ||
+    evidence.electron_version !== version ||
+    evidence.platform !== "win32-x64"
+  ) {
+    throw new Error("Unreviewed Electron native runtime identity");
+  }
+  // A pending evidence file is not a license exception. Even editing its status
+  // cannot approve redistribution: source-asset verification and the explicit
+  // authorization decision must be implemented before this barrier is lifted.
+  throw new Error(
+    "ELECTRON_NATIVE_DISTRIBUTION_BLOCKED: ffmpeg.dll is LGPL-2.1-or-later; corresponding-source redistribution authorization and same-release source/patch/build/notices verification are pending. Electron's own MIT label does not cover this native library.",
+  );
 }

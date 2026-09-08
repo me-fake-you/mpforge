@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
-import type { ImageHostConfig } from "../../services/image/ImageUploader";
 import {
-  AliyunPanel,
+  isSupportedImageHostType,
+  type ImageHostConfig,
+} from "../../services/image/ImageUploader";
+import {
   HostTabs,
   OfficialHostPanel,
   QiniuPanel,
@@ -13,11 +15,10 @@ import {
 import "./ImageHostSettings.css";
 
 interface AllConfigs {
-  currentType: ImageHostConfig["type"];
+  currentType: ImageHostConfig["type"] | null;
   configs: {
     official?: any;
     qiniu?: any;
-    aliyun?: any;
     tencent?: any;
     s3?: any;
   };
@@ -26,10 +27,35 @@ interface AllConfigs {
 export function ImageHostSettings() {
   const [allConfigs, setAllConfigs] = useState<AllConfigs>(() => {
     const saved = localStorage.getItem("imageHostConfigs");
-    return saved ? JSON.parse(saved) : { currentType: "official", configs: {} };
+    try {
+      if (!saved) {
+        const legacy = localStorage.getItem("imageHostConfig");
+        if (!legacy) return { currentType: "official", configs: {} };
+        const parsed = JSON.parse(legacy);
+        if (!isSupportedImageHostType(parsed?.type))
+          return { currentType: null, configs: {} };
+        return {
+          currentType: parsed.type,
+          configs: { [parsed.type]: parsed.config },
+        };
+      }
+      const parsed = JSON.parse(saved);
+      return {
+        currentType: isSupportedImageHostType(parsed?.currentType)
+          ? parsed.currentType
+          : null,
+        // Unknown legacy entries remain opaque: never index them or activate a fallback.
+        configs:
+          parsed?.configs && typeof parsed.configs === "object"
+            ? parsed.configs
+            : {},
+      };
+    } catch {
+      return { currentType: null, configs: {} };
+    }
   });
   const [viewingType, setViewingType] = useState<ImageHostConfig["type"]>(
-    allConfigs.currentType,
+    allConfigs.currentType ?? "official",
   );
   const [testResult, setTestResult] = useState<HostTestResult | null>(null);
 
@@ -40,6 +66,8 @@ export function ImageHostSettings() {
   };
 
   useEffect(() => {
+    // Keep existing storage untouched until the user explicitly activates a supported host.
+    if (!allConfigs.currentType) return;
     localStorage.setItem("imageHostConfigs", JSON.stringify(allConfigs));
     const currentConfig = {
       type: allConfigs.currentType,
@@ -124,13 +152,11 @@ export function ImageHostSettings() {
         btn.textContent =
           originalText ||
           `启用${
-            type === "aliyun"
-              ? "阿里云 OSS"
-              : type === "tencent"
-                ? "腾讯云 COS"
-                : type === "s3"
-                  ? "S3 图床"
-                  : "七牛云图床"
+            type === "tencent"
+              ? "腾讯云 COS"
+              : type === "s3"
+                ? "S3 图床"
+                : "七牛云图床"
           }`;
       }
     }
@@ -138,6 +164,11 @@ export function ImageHostSettings() {
 
   return (
     <div className="image-host-settings">
+      {!activeType && (
+        <p role="alert">
+          此前选择的图床已停用或不受支持。上传保持关闭，请明确选择并启用其他服务；旧图床凭据不会用于上传。
+        </p>
+      )}
       <HostTabs
         activeType={activeType}
         viewingType={viewingType}
@@ -158,17 +189,6 @@ export function ImageHostSettings() {
 
         {viewingConfig.type === "qiniu" && (
           <QiniuPanel
-            activeType={activeType}
-            viewingConfig={viewingConfig}
-            testResult={testResult}
-            onConfigChange={handleConfigChange}
-            onTestConnection={testConnection}
-            onActivate={handleActivate}
-          />
-        )}
-
-        {viewingConfig.type === "aliyun" && (
-          <AliyunPanel
             activeType={activeType}
             viewingConfig={viewingConfig}
             testResult={testResult}

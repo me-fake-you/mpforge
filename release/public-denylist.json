@@ -97,7 +97,12 @@
       "id": "private-email",
       "expression": "\\b[A-Z0-9._%+-]+@(?!example\\.(?:com|org|net)|example\\.invalid|users\\.noreply\\.github\\.com)[A-Z0-9.-]+\\.[A-Z]{2,}\\b",
       "flags": "gi",
-      "allowed_values": ["vast@whiteants.net", "i@izs.me", "support@github.com", "noreply@github.com"]
+      "allowed_values": ["vast@whiteants.net", "i@izs.me", "support@github.com", "noreply@github.com", "jhruby.web@gmail.com", "O.KmQpOAN@wO.KxQdO"]
+    },
+    {
+      "id": "excluded-vendored-gpl-digest",
+      "expression": "This file is part of digest\\.js",
+      "extensions": [".js", ".cjs", ".html"]
     },
     {
       "id": "china-mobile",

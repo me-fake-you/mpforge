@@ -866,6 +866,12 @@
       "mode": "100644"
     },
     {
+      "path": "apps/web/src/__tests__/components/ImageHostRetirement.test.tsx",
+      "size": 4019,
+      "mode": "100644",
+      "sha256": "35b892bf7f37b56bf9e9266f73d1121f42b8d855d70c345c9b4e66e9e976fdb4"
+    },
+    {
       "path": "apps/web/src/__tests__/components/ImageHostSettingsUx.test.ts",
       "sha256": "02d06f4f2bc6a673f3287e14c57d69b5dda94cef1ea0cfa69a7e7d543dc555f1",
       "size": 3334,
@@ -2348,12 +2354,6 @@
       "mode": "100644"
     },
     {
-      "path": "apps/web/src/services/image/uploaders/AliyunUploader.ts",
-      "sha256": "b90f8fb807a1e96c3e6ebcbf0447a39498264891968a9c9f304edb7c1c13426a",
-      "size": 2184,
-      "mode": "100644"
-    },
-    {
       "path": "apps/web/src/services/image/uploaders/OfficialUploader.ts",
       "sha256": "8ca8222575aa816e40046aed810bcbb26e3c23a243cddda7141fcc19947b1535",
       "size": 1482,
@@ -2970,6 +2970,12 @@
       "sha256": "ee3a6508613c51846ce31b34c19f21022f4037a2826dbca5b7cdf9a389ef2429",
       "size": 2642,
       "mode": "100644"
+    },
+    {
+      "path": "docs/licenses/electron-44.2.0-native-review.json",
+      "size": 1833,
+      "mode": "100644",
+      "sha256": "3b59229eb01d4e2ac821b8dc2804e765def517c145e35ad37f617f73b43c41e1"
     },
     {
       "path": "docs/LINTER_RULES.md",
@@ -4857,5 +4863,13 @@
     "live_account_tested": false,
     "formal_publish_supported": false,
     "mass_send_supported": false
+  },
+  "maintenance": {
+    "source_commit": "f53a977ad7737edf5d191eff767e387c5001c6b0",
+    "updated_at": "2026-09-08T08:00:01.415Z",
+    "retired_paths": [
+      "apps/web/src/services/image/uploaders/AliyunUploader.ts"
+    ],
+    "reason": "Remove the optional uploader with a vendored GPL dependency; gate native runtime distribution pending source attachment authorization."
   }
 }
