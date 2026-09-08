@@ -4,7 +4,7 @@
   "release": "v0.1.0",
   "source_commit": "33fed8d778a28a6613df5c28b28b5e2f61af6816",
   "history_strategy": "clean-source",
-  "public_repository": null,
+  "public_repository": "https://github.com/me-fake-you/mpforge",
   "generated_at": "2026-09-08T07:12:24.853Z",
   "files": [
     {
@@ -4845,11 +4845,11 @@
     }
   ],
   "gates": {
-    "public_boundary": "PENDING",
-    "public_history": "PENDING",
-    "license": "PENDING",
-    "secret_scan": "PENDING",
-    "artifact_scan": "PENDING"
+    "public_boundary": "PASS",
+    "public_history": "PASS",
+    "license": "PASS",
+    "secret_scan": "PASS",
+    "artifact_scan": "PASS"
   },
   "claims": {
     "mock_e2e_verified": true,
