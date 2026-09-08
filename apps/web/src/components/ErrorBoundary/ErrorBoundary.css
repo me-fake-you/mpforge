@@ -1,0 +1,98 @@
+/* 错误边界在应用崩溃后渲染，主题变量可能未加载，故全部保留兜底值 */
+.error-boundary {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: var(--bg-page, #f9fafb);
+  color: var(--text-primary, #1a1a1a);
+  text-align: center;
+}
+
+.error-boundary-card {
+  width: 100%;
+  max-width: 500px;
+  padding: 40px;
+  border: 1px solid var(--border-light, #e5e7eb);
+  border-radius: 10px;
+  background: var(--bg-primary, #ffffff);
+  box-shadow: 0 4px 8px rgba(15, 23, 42, 0.14);
+}
+
+.error-boundary-card h1 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary, #111827);
+}
+
+.error-boundary-desc {
+  margin: 0 0 24px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary, #4b5563);
+}
+
+.error-boundary-stack {
+  margin: 0 0 20px;
+  padding: 12px;
+  border-radius: 6px;
+  background: var(--bg-secondary, #f3f4f6);
+  color: var(--error, #ef4444);
+  font-size: 12px;
+  text-align: left;
+  max-height: 200px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.error-boundary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.error-boundary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 24px;
+  border: 1px solid var(--border-light, #e5e7eb);
+  border-radius: 6px;
+  background: var(--bg-primary, #ffffff);
+  color: var(--text-secondary, #4b5563);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease;
+}
+
+.error-boundary-btn:hover {
+  color: var(--text-primary, #111827);
+  background: var(--bg-hover, #f9fafb);
+}
+
+.error-boundary-btn.primary {
+  border-color: var(--accent-primary, #047857);
+  background: var(--accent-primary, #047857);
+  color: var(--on-accent, #fff);
+}
+
+.error-boundary-btn.primary:hover {
+  border-color: var(--accent-hover, #065f46);
+  background: var(--accent-hover, #065f46);
+  color: var(--on-accent, #fff);
+}
+
+.error-boundary-btn:focus-visible {
+  outline: 2px solid var(--accent-primary, #047857);
+  outline-offset: 2px;
+}

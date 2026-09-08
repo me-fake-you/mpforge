@@ -1,0 +1,15 @@
+# Immutable, hash-bound, or generated release evidence must never be rewritten
+# by a formatting hook. Changes require regeneration through their owning tool.
+content/**
+operations/**
+artifacts/**
+reports/*.json
+
+# Project-local downloads, third-party sources, caches, and build outputs.
+downloads/**
+third_party/**
+.cache/**
+tmp/**
+node_modules/**
+dist/**
+release/**

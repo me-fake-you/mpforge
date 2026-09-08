@@ -1,0 +1,59 @@
+legacy/
+node_modules/
+.DS_Store
+.turbo/
+.pnpm-store/
+dist/
+.env
+.env.local
+*.env.local
+apps/macos/
+# Electron
+apps/electron/node_modules/
+apps/electron/dist/
+apps/electron/web-dist/
+apps/electron/release/
+.tmp/
+
+# MPForge project-local caches and generated artifacts
+.cache/
+tmp/
+content/
+operations/
+artifacts/*
+!artifacts/evidence/
+artifacts/evidence/*
+!artifacts/evidence/round-4/
+artifacts/evidence/round-4/*
+!artifacts/evidence/round-4/*.png
+!artifacts/evidence/round-4/*.gif
+.worktrees/
+downloads/*
+!downloads/MANIFEST.json
+!downloads/MANIFEST.public.json
+third_party/sources/
+third_party/toolchains/
+playwright-report/
+test-results/
+output/playwright/
+coverage/
+*.tsbuildinfo
+
+# Generated public-release staging areas (configs under release/ are tracked)
+release/public-source/
+release/staging/
+
+# Local gate evidence produced against the sanitized public repository.
+reports/public-boundary-scan.json
+reports/public-history-scan.json
+reports/release-artifact-scan.json
+reports/round4-current-dependency-audit.json
+reports/round4-local-*.log
+reports/shipped-runtime-audit.json
+
+# AI Agent files
+.agentdocs/
+CLAUDE.md
+.gemini/
+.claude/
+.codex/

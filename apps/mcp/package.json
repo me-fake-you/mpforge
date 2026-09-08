@@ -1,0 +1,27 @@
+{
+  "name": "@mpforge/mcp",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Local stdio MCP server for MPForge",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "mpforge-mcp": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "lint": "tsc --noEmit",
+    "test": "vitest",
+    "test:ci": "pnpm run test --run"
+  },
+  "dependencies": {
+    "@mpforge/cli": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^4.0.16"
+  }
+}

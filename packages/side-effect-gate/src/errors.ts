@@ -1,0 +1,36 @@
+export type SideEffectGateErrorCode =
+  | "REAL_CONTEXT_REQUIRED"
+  | "REAL_EXECUTION_DISABLED"
+  | "CI_BLOCKED"
+  | "GITHUB_ACTIONS_BLOCKED"
+  | "MCP_BLOCKED"
+  | "AGENT_BLOCKED"
+  | "SKILL_BLOCKED"
+  | "AUTOMATION_BLOCKED"
+  | "BACKGROUND_BLOCKED"
+  | "NON_INTERACTIVE_BLOCKED"
+  | "PIPED_STDIN_BLOCKED"
+  | "FORBIDDEN_BYPASS_FLAG"
+  | "ENV_AUTO_APPROVAL_BLOCKED"
+  | "WEB_HUMAN_SESSION_REQUIRED"
+  | "WEB_HUMAN_SESSION_INVALID"
+  | "WEB_HUMAN_SESSION_EXPIRED"
+  | "INVALID_APPROVAL_BINDING"
+  | "INVALID_CHALLENGE_TTL"
+  | "CHALLENGE_ALREADY_EXISTS"
+  | "CHALLENGE_NOT_FOUND"
+  | "CHALLENGE_BUSY"
+  | "CHALLENGE_EXPIRED"
+  | "CHALLENGE_ALREADY_CONSUMED"
+  | "CHALLENGE_INVALID"
+  | "CHALLENGE_SUBMITTER_MISMATCH";
+
+export class SideEffectGateError extends Error {
+  readonly code: SideEffectGateErrorCode;
+
+  constructor(code: SideEffectGateErrorCode, message: string) {
+    super(message);
+    this.name = "SideEffectGateError";
+    this.code = code;
+  }
+}

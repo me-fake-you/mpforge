@@ -1,0 +1,43 @@
+.window-controls,
+.window-controls-compact {
+  -webkit-app-region: no-drag;
+}
+
+.window-controls {
+  height: 100%;
+  display: flex;
+  margin-left: 8px;
+  margin-right: calc(-14px - var(--titlebar-right-inset, 0px));
+  overflow: hidden;
+  border-radius: 0 12px 12px 0;
+}
+
+.window-controls-compact {
+  flex: 0 0 auto;
+  height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.win-btn {
+  width: 46px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  -webkit-app-region: no-drag;
+}
+
+.win-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.win-close:hover {
+  background: #e81123;
+  color: #fff;
+}

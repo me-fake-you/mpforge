@@ -1,0 +1,65 @@
+name: Bug report
+description: Report a reproducible MPForge defect without private content or credentials
+title: "[Bug] "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Never include private articles, account credentials, cookies, tokens, or secrets. Use a minimal public reproduction.
+  - type: input
+    id: commit
+    attributes:
+      label: MPForge commit
+      description: Exact Git commit SHA or release tag.
+    validations:
+      required: true
+  - type: dropdown
+    id: interface
+    attributes:
+      label: Interface
+      options:
+        - Web
+        - Electron
+        - CLI
+        - MCP
+        - Mock Draft
+        - Real Draft adapter (redacted)
+        - Build or release tooling
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal public reproduction
+      description: Provide exact steps and synthetic input. Redact local user paths when they are not relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior and safe evidence
+      description: Paste only redacted logs or link to public-safe artifacts.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, architecture, Node version, and browser/Electron version.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety confirmation
+      options:
+        - label: I removed credentials, tokens, cookies, private article content, and personal paths from this report.
+          required: true

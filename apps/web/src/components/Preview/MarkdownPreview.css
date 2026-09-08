@@ -1,0 +1,162 @@
+.markdown-preview {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  background: var(--bg-primary);
+}
+
+.preview-header {
+  min-height: 56px;
+  padding: 8px 12px;
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--border-light) 72%, transparent);
+  background: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.preview-heading,
+.preview-controls,
+.preview-scheme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.preview-controls select,
+.preview-scheme-toggle button {
+  min-height: 28px;
+  border: 1px solid var(--border-light);
+  border-radius: 7px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 11px;
+}
+
+.preview-controls select {
+  padding: 0 24px 0 8px;
+}
+
+.preview-scheme-toggle {
+  gap: 2px;
+  padding: 2px;
+  border-radius: 8px;
+  background: var(--bg-tertiary);
+}
+
+.preview-scheme-toggle button {
+  padding: 0 8px;
+  border-color: transparent;
+}
+
+.preview-scheme-toggle button[aria-pressed="true"] {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background: var(--bg-primary);
+}
+
+.preview-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+}
+
+.preview-subtitle {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  padding: 2px 8px;
+  background: var(--bg-tertiary);
+  border-radius: 5px;
+}
+
+.preview-container {
+  flex: 1;
+  overflow-y: auto;
+  /* 两侧预留等宽滚动条槽，避免滚动条出现时横移，并保持画布居中 */
+  scrollbar-gutter: stable both-edges;
+  /* 402px 画布固定居中；竖向滚动条占宽或面板贴到最小宽度时不应冒出外层横向滚动条，
+     多出的空白内边距直接裁掉，宽内容由各自的内部滚动容器承担 */
+  overflow-x: hidden;
+  padding: 0;
+  background: var(--bg-primary);
+}
+
+.preview-content {
+  box-sizing: border-box;
+  width: var(--mpforge-preview-width, 402px);
+  flex-shrink: 0;
+  margin: 0 auto;
+  background: var(--bg-primary);
+  padding: 44px 24px 80px;
+  border-radius: 0;
+  box-shadow: none;
+  min-height: 100%;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .app[data-layout-mode="mobile"] .preview-container {
+    padding: 0;
+  }
+
+  .app[data-layout-mode="mobile"] .preview-content {
+    width: 100%;
+    padding: 28px 22px 72px;
+  }
+}
+
+/* 确保斜体样式生效 */
+#wemd em {
+  font-style: italic !important;
+  font-synthesis: style;
+  /* 允许浏览器合成斜体 */
+}
+
+/* 表格容器横向滚动（主题 CSS 可能缺失此规则） */
+#wemd .table-container {
+  overflow-x: auto;
+}
+
+/* 长代码行在代码块内部横向滚动，避免撑宽 402px 画布（同时覆盖 <pre class="mermaid">） */
+#wemd pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* 行间公式（KaTeX display）在自身容器内横向滚动，避免被 402px 画布裁切 */
+#wemd .katex-display {
+  max-width: 100%;
+  overflow: auto hidden;
+}
+
+/* 强制图片自适应，修复浏览器存储模式下图片过大的问题 */
+#wemd img {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+  margin: 10px auto;
+}
+
+/* 针对整个预览容器启用字体合成 */
+#wemd {
+  font-synthesis: style weight;
+}
+
+/* ========================================
+   深色模式 - 预览容器背景（接近微信深色模式）
+   ======================================== */
+[data-preview-scheme="dark"].markdown-preview,
+[data-preview-scheme="dark"] .preview-container,
+[data-preview-scheme="dark"] .preview-content {
+  background: #0f1113;
+}
+
+[data-preview-scheme="dark"] .preview-content {
+  box-shadow: none;
+}

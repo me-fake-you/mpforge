@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" role="img" aria-labelledby="title desc">
+  <metadata>Original MPForge example artwork; MIT licensed with this repository.</metadata>
+  <title id="title">雨后街道</title>
+  <desc id="desc">暖色路灯倒映在蓝灰色的雨后街道上。</desc>
+  <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#64748b"/><stop offset="1" stop-color="#cbd5e1"/></linearGradient><linearGradient id="road" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#334155"/><stop offset=".5" stop-color="#92400e"/><stop offset="1" stop-color="#334155"/></linearGradient></defs>
+  <rect width="960" height="420" rx="32" fill="url(#sky)"/><rect y="245" width="960" height="175" fill="url(#road)"/>
+  <g fill="#f59e0b"><circle cx="250" cy="150" r="24"/><circle cx="710" cy="126" r="20"/></g><g stroke="#fbbf24" stroke-width="12" opacity=".45"><path d="M250 175l-45 225"/><path d="M710 150l35 250"/></g>
+  <g stroke="#e2e8f0" stroke-width="4" stroke-linecap="round" opacity=".7"><path d="M90 40l-25 55M180 22l-28 62M420 30l-22 58M560 18l-26 64M840 28l-24 58"/></g>
+</svg>

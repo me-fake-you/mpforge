@@ -1,0 +1,43 @@
+name: Decision required
+description: Record a bounded owner decision that blocks a safe next step
+title: "[Decision] "
+labels: ["decision-required", "blocked"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use public-safe evidence only. Never place credentials, private articles, account receipts, tokens, cookies, or personal paths in an issue.
+  - type: textarea
+    id: decision
+    attributes:
+      label: Decision needed
+      description: State the one decision that must be made.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Verified evidence
+      description: Link to public-safe files, reports, commits, or workflow runs.
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: Mutually exclusive options
+      description: Include safety, license, compatibility, and maintenance tradeoffs.
+    validations:
+      required: true
+  - type: textarea
+    id: safe_default
+    attributes:
+      label: Safe default if unanswered
+    validations:
+      required: true
+  - type: checkboxes
+    id: disclosure
+    attributes:
+      label: Disclosure check
+      options:
+        - label: I removed secrets, private content, personal paths, and real account data.
+          required: true

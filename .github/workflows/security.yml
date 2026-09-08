@@ -1,0 +1,87 @@
+name: MPForge security and public-boundary gates
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 3 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  npm_config_cache: ${{ github.workspace }}/.cache/npm
+  PNPM_STORE_DIR: ${{ github.workspace }}/.cache/pnpm-store
+  COREPACK_HOME: ${{ github.workspace }}/.cache/corepack
+  TMPDIR: ${{ github.workspace }}/tmp
+  MPFORGE_NETWORK_MODE: mock-only
+  MPFORGE_REAL_WECHAT_DISABLED: "true"
+  MPFORGE_DEMO_MODE: "true"
+
+jobs:
+  audit:
+    name: Secrets, dependencies, licenses, endpoints, boundary, and history
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout full public history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Prepare project-local directories and pnpm
+        shell: bash
+        run: |
+          mkdir -p .cache/npm .cache/pnpm-store .cache/corepack tmp
+          corepack enable
+          corepack prepare pnpm@9.0.2 --activate
+          pnpm config set store-dir "$PNPM_STORE_DIR"
+
+      - name: Restore dependency cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            .cache/npm
+            .cache/pnpm-store
+            .cache/corepack
+          key: mpforge-security-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            mpforge-security-${{ runner.os }}-
+
+      - name: Install locked dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run deterministic repository security gates
+        shell: bash
+        run: |
+          node scripts/check-secrets.mjs
+          node scripts/check-large-files.mjs
+          node scripts/check-licenses.mjs
+          node scripts/check-forbidden-wechat-capabilities.mjs
+
+      - name: Audit public tree and release boundary
+        run: node scripts/audit-public-boundary.mjs
+
+      - name: Audit every public Git object, tag, and LFS entry
+        run: node scripts/scan-public-history.mjs --require-complete
+
+      - name: Audit production dependency advisories
+        run: pnpm audit --prod --audit-level high --registry=https://registry.npmjs.org
+
+      - name: Audit the shipped Electron runtime independently of dependency classification
+        shell: bash
+        run: |
+          node --test scripts/check-shipped-runtime.test.mjs
+          node scripts/check-shipped-runtime.mjs

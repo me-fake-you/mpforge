@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "policy": "error-on-match",
+  "path_prefixes": [
+    ".cache",
+    ".git",
+    ".worktrees",
+    "apps/electron/release",
+    "apps/electron/web-dist",
+    "apps/server",
+    "content",
+    "downloads",
+    "operations",
+    "third_party/sources",
+    "third_party/toolchains",
+    "tmp"
+  ],
+  "path_prefix_exceptions": ["downloads/MANIFEST.public.json"],
+  "path_segments": [
+    ".auth",
+    ".pnpm-store",
+    ".turbo",
+    "User Data",
+    "browser-profile",
+    "coverage",
+    "dist",
+    "node_modules",
+    "output",
+    "playwright-report",
+    "test-results"
+  ],
+  "exact_paths": [".project-root.json"],
+  "path_globs": [
+    "**/.env",
+    "**/.env.*",
+    "**/*.asar",
+    "**/*.bundle",
+    "**/*.core",
+    "**/*.crt",
+    "**/*.db",
+    "**/*.dll",
+    "**/*.dmp",
+    "**/*.exe",
+    "**/*.key",
+    "**/*.log",
+    "**/*.map",
+    "**/*.msi",
+    "**/*.p12",
+    "**/*.pem",
+    "**/*.pfx",
+    "**/*.rar",
+    "**/*.sqlite",
+    "**/*.sqlite3",
+    "**/*.tgz",
+    "**/*.trace",
+    "**/*.zip",
+    "**/*.7z",
+    "**/dist/**"
+  ],
+  "path_glob_exceptions": ["**/.env.example"],
+  "source_max_file_bytes": 5242880,
+  "source_size_exceptions": ["artifacts/evidence/round-4/demo.gif"],
+  "content_rules": [
+    {
+      "id": "windows-user-path",
+      "expression": "(?:[A-Za-z]:[\\\\/](?:Users|Documents and Settings)[\\\\/]|[A-Za-z]:[\\\\/][^\\r\\n\"']+[\\\\/](?:研究生学习|项目复刻)(?:[\\\\/]|$))"
+    },
+    {
+      "id": "unix-user-path",
+      "expression": "(?:/Users/[^/\\s]+/|/home/[^/\\s]+/)"
+    },
+    {
+      "id": "private-key",
+      "expression": "-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"
+    },
+    {
+      "id": "github-token",
+      "expression": "\\b(?:ghp_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,})\\b"
+    },
+    {
+      "id": "aws-access-key",
+      "expression": "\\b(?:AKIA|ASIA)[A-Z0-9]{16}\\b"
+    },
+    {
+      "id": "bearer-token",
+      "expression": "\\bBearer\\s+[A-Za-z0-9._~+/-]{20,}={0,2}\\b"
+    },
+    {
+      "id": "jwt",
+      "expression": "\\beyJ[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}\\b"
+    },
+    {
+      "id": "assigned-secret",
+      "expression": "\\b(?:app[_-]?secret|client[_-]?secret|api[_-]?key|access[_-]?token|cookie)\\s*[:=]\\s*[\"'](?!mock|demo|test|example|placeholder|redacted)[A-Za-z0-9_+/=.~-]{16,}[\"']"
+    },
+    {
+      "id": "private-email",
+      "expression": "\\b[A-Z0-9._%+-]+@(?!example\\.(?:com|org|net)|example\\.invalid|users\\.noreply\\.github\\.com)[A-Z0-9.-]+\\.[A-Z]{2,}\\b",
+      "flags": "gi",
+      "allowed_values": ["vast@whiteants.net", "i@izs.me"]
+    },
+    {
+      "id": "china-mobile",
+      "expression": "(?<![A-Za-z0-9])(?:\\+?86[- ]?)?1[3-9]\\d{9}(?![A-Za-z0-9])"
+    },
+    {
+      "id": "real-account-alias",
+      "expression": "\"account_alias\"\\s*:\\s*\"(?!mock[-_]|demo[-_]|test[-_]|ci[-_]|example[-_]|\\{\\{)[^\"]+\""
+    },
+    {
+      "id": "formal-wechat-side-effect",
+      "expression": "(?:/cgi-bin/freepublish|/cgi-bin/message/mass|formalPublish|massSend|sendToFollowers)",
+      "excluded_files": ["scripts/check-forbidden-wechat-capabilities.mjs"]
+    },
+    {
+      "id": "active-svg-content",
+      "expression": "<(?:script|iframe)\\b|\\son(?:load|error|click)\\s*=",
+      "extensions": [".svg"]
+    }
+  ],
+  "content_rule_excluded_prefixes": [
+    "tests",
+    "packages/linter/src/security-fixtures"
+  ],
+  "content_rule_excluded_globs": [
+    "**/*.test.js",
+    "**/*.test.mjs",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.js",
+    "**/*.spec.mjs",
+    "**/*.spec.ts",
+    "**/*.spec.tsx"
+  ],
+  "content_rule_excluded_files": ["release/public-denylist.json"],
+  "history_forbidden_prefixes": [
+    "apps/server",
+    "operations",
+    "content",
+    ".cache",
+    "tmp",
+    "third_party/sources",
+    "third_party/toolchains"
+  ],
+  "artifact_forbidden_segments": [
+    ".cache",
+    ".git",
+    "apps/server",
+    "content",
+    "downloads",
+    "operations",
+    "src",
+    "tests",
+    "tmp"
+  ],
+  "artifact_forbidden_globs": ["**/.env*", "**/*.map", "**/*.bundle"],
+  "license_forbidden_values": [
+    "AGPL-1.0",
+    "AGPL-3.0",
+    "NOASSERTION",
+    "UNLICENSED",
+    "UNKNOWN",
+    "Source-Available"
+  ]
+}

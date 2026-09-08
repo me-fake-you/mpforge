@@ -1,0 +1,74 @@
+.pixel-loader {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pixel-loader-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 4px);
+  gap: 1.5px;
+  flex: none;
+}
+
+.pixel-loader-grid span {
+  width: 4px;
+  height: 4px;
+  border-radius: 1px;
+  background: var(--accent-primary);
+  opacity: 0.18;
+  animation: pixel-on 650ms ease-in-out infinite;
+}
+
+.pixel-loader-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: transparent;
+  background-image: linear-gradient(
+    90deg,
+    var(--text-tertiary) 35%,
+    var(--accent-primary) 50%,
+    var(--text-tertiary) 65%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: pixel-shimmer-text 1.4s linear infinite;
+}
+
+.pixel-loader-time {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes pixel-on {
+  0%,
+  100% {
+    opacity: 0.18;
+  }
+  18%,
+  42% {
+    opacity: 1;
+  }
+  62% {
+    opacity: 0.18;
+  }
+}
+
+@keyframes pixel-shimmer-text {
+  0% {
+    background-position: 150% center;
+  }
+  100% {
+    background-position: -50% center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pixel-loader-grid span,
+  .pixel-loader-label {
+    animation: none;
+  }
+}

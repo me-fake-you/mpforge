@@ -1,0 +1,60 @@
+{
+  "appId": "io.github.mpforge.desktop",
+  "productName": "MPForge",
+  "directories": {
+    "output": "release"
+  },
+  "files": [
+    "dist/**/*",
+    "assets/**/*",
+    "package.json",
+    "!**/.DS_Store",
+    "!**/*.map",
+    "!**/*.test.js",
+    "!**/*.test.d.ts",
+    "!**/*.spec.js",
+    "!**/node_modules/@mpforge/**/src/**",
+    "!**/node_modules/@mpforge/**/tests/**",
+    "!**/node_modules/@mpforge/**/.turbo/**",
+    "!**/node_modules/@mpforge/**/tsconfig*.json",
+    "!**/node_modules/@mpforge/**/vitest.config.*",
+    "!**/node_modules/@wemd/**/src/**",
+    "!**/node_modules/@wemd/**/test/**",
+    "!**/node_modules/@wemd/**/tests/**",
+    "!**/node_modules/@wemd/**/.turbo/**",
+    "!**/node_modules/@wemd/**/tsconfig*.json",
+    "!**/node_modules/@wemd/**/vitest.config.*",
+    "!**/node_modules/katex/src/**"
+  ],
+  "extraResources": [
+    {
+      "from": "../web/dist",
+      "to": "web-dist",
+      "filter": ["**/*", "!**/.DS_Store"]
+    }
+  ],
+  "mac": {
+    "category": "public.app-category.productivity",
+    "target": ["zip"],
+    "icon": "assets/icon.icns"
+  },
+  "win": {
+    "target": ["nsis", "zip"],
+    "icon": "assets/icon.ico",
+    "artifactName": "MPForge-Portable-${version}-win-${arch}.${ext}"
+  },
+  "nsis": {
+    "artifactName": "MPForge.Setup.${version}.${ext}",
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "perMachine": false,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true
+  },
+  "linux": {
+    "target": ["AppImage", "deb"],
+    "category": "Office",
+    "icon": "assets/icon.png",
+    "maintainer": "MPForge contributors"
+  }
+}

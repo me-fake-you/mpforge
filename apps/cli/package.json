@@ -1,0 +1,54 @@
+{
+  "name": "@mpforge/cli",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Content-as-Code CLI for MPForge",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "mpforge": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./accounts": {
+      "types": "./dist/accounts.d.ts",
+      "import": "./dist/accounts.js"
+    },
+    "./drafts": {
+      "types": "./dist/drafts.d.ts",
+      "import": "./dist/drafts.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "lint": "tsc --noEmit",
+    "test": "vitest",
+    "test:ci": "pnpm run test --run"
+  },
+  "dependencies": {
+    "@mpforge/audit": "workspace:*",
+    "@mpforge/content-schema": "workspace:*",
+    "@mpforge/content-store": "workspace:*",
+    "@mpforge/draft-operations": "workspace:*",
+    "@mpforge/linter": "workspace:*",
+    "@mpforge/mock-wechat": "workspace:*",
+    "@mpforge/media": "workspace:*",
+    "@mpforge/preview": "workspace:*",
+    "@mpforge/renderer": "workspace:*",
+    "@mpforge/review-gate": "workspace:*",
+    "@mpforge/side-effect-gate": "workspace:*",
+    "@mpforge/themes": "workspace:*",
+    "@mpforge/wechat-adapter": "workspace:*",
+    "playwright-core": "1.62.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^4.0.16"
+  }
+}

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon-dark.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon-dark.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- PWA 支持 -->
+    <meta
+      name="theme-color"
+      content="#f9f9f9"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#1e1e1e"
+      media="(prefers-color-scheme: dark)"
+    />
+    <link rel="apple-touch-icon" href="/pwa/icon-192.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="MPForge" />
+    <title>MPForge - Content-as-Code 微信草稿工作台</title>
+    <meta
+      name="description"
+      content="MPForge 将 Markdown 转换为经过审校、可复现、可审计的微信公众号草稿。基于 WeMD 的透明 Fork，本地优先。"
+    />
+    <meta
+      name="keywords"
+      content="MPForge,Content-as-Code,微信公众号,Markdown,内容审校,草稿审计,WeMD Fork"
+    />
+
+    <!-- Open Graph -->
+    <meta
+      property="og:title"
+      content="MPForge - Content-as-Code 微信草稿工作台"
+    />
+    <meta
+      property="og:description"
+      content="从 Markdown 到经过审校、可复现、可审计的微信公众号草稿。"
+    />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="MPForge - Content-as-Code 微信草稿工作台"
+    />
+    <meta
+      name="twitter:description"
+      content="从 Markdown 到经过审校、可复现、可审计的微信公众号草稿。"
+    />
+
+    <!-- MathJax will be loaded dynamically when formulas are detected -->
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

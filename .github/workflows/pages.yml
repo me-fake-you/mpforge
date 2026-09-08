@@ -1,0 +1,143 @@
+name: MPForge Mock Demo Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  npm_config_cache: ${{ github.workspace }}/.cache/npm
+  PNPM_STORE_DIR: ${{ github.workspace }}/.cache/pnpm-store
+  COREPACK_HOME: ${{ github.workspace }}/.cache/corepack
+  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/playwright
+  ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
+  TMPDIR: ${{ github.workspace }}/tmp
+  MPFORGE_NETWORK_MODE: mock-only
+  MPFORGE_REAL_WECHAT_DISABLED: "true"
+  MPFORGE_DEMO_MODE: "true"
+  VITE_MPFORGE_DEMO_MODE: "true"
+
+jobs:
+  build:
+    name: Verify and build the public Mock demo
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout full public history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Prepare project-local directories and pnpm
+        shell: bash
+        run: |
+          mkdir -p .cache/npm .cache/pnpm-store .cache/corepack .cache/playwright .cache/electron tmp
+          corepack enable
+          corepack prepare pnpm@9.0.2 --activate
+          pnpm config set store-dir "$PNPM_STORE_DIR"
+
+      - name: Restore project-local dependency caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            .cache/npm
+            .cache/pnpm-store
+            .cache/corepack
+          key: mpforge-pages-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            mpforge-pages-${{ runner.os }}-
+
+      - name: Install locked dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify the public source boundary and history
+        shell: bash
+        run: |
+          pnpm qa
+          node scripts/audit-public-boundary.mjs
+          node scripts/scan-public-history.mjs --require-complete
+
+      - name: Test and build the Web demo
+        shell: bash
+        run: |
+          pnpm exec turbo run test:ci --filter=@mpforge/web
+          pnpm --dir apps/web lint
+          pnpm --dir apps/web exec tsc -b --pretty false
+          pnpm --dir apps/web build
+          node scripts/check-frontend-bundle-secrets.mjs
+
+      - name: Prove the bundle is Mock-only
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import { readdirSync, readFileSync, statSync } from "node:fs";
+          import { join } from "node:path";
+
+          const root = "apps/web/dist";
+          const files = [];
+          const visit = (directory) => {
+            for (const name of readdirSync(directory)) {
+              const file = join(directory, name);
+              if (statSync(file).isDirectory()) visit(file);
+              else if (/\.(?:html|js|css|json|webmanifest)$/u.test(name)) files.push(file);
+            }
+          };
+          visit(root);
+          const bundle = files.map((file) => readFileSync(file, "utf8")).join("\n");
+          if (!/DEMO\s*\/\s*MOCK/iu.test(bundle)) {
+            throw new Error("The Pages bundle has no visible DEMO / MOCK marker.");
+          }
+          const forbidden = [
+            "api.weixin.qq.com",
+            "api.openai.com",
+            "api.deepseek.com",
+            "open.bigmodel.cn",
+            "api.moonshot.cn",
+            "dashscope.aliyuncs.com",
+            "api.siliconflow.cn",
+            "openrouter.ai",
+          ];
+          const found = forbidden.filter((endpoint) => bundle.includes(endpoint));
+          if (found.length) {
+            throw new Error(`External API endpoints remain in the Demo bundle: ${found.join(", ")}`);
+          }
+          NODE
+
+      - name: Scan the exact Pages artifact
+        run: node scripts/audit-public-boundary.mjs --artifacts apps/web/dist
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload verified Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/web/dist
+
+  deploy:
+    name: Deploy verified Mock demo
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

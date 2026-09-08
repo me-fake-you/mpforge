@@ -1,0 +1,46 @@
+name: Feature request
+description: Propose a scoped improvement while preserving MPForge safety boundaries
+title: "[Feature] "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What user outcome is difficult today? Do not include private content.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe observable behavior, not only an implementation choice.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: true
+  - type: dropdown
+    id: side_effect
+    attributes:
+      label: External side effect
+      options:
+        - None
+        - Local filesystem only
+        - Network read
+        - Account or publishing write
+        - Unsure
+    validations:
+      required: true
+  - type: checkboxes
+    id: invariants
+    attributes:
+      label: Project invariants
+      options:
+        - label: This proposal does not require automatic formal broadcast or mass sending.
+          required: true
+        - label: I have not copied code, themes, prompts, or assets with unclear rights.
+          required: true

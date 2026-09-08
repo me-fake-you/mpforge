@@ -1,0 +1,70 @@
+{
+  "name": "mpforge-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "packageManager": "pnpm@9.0.2",
+  "engines": {
+    "node": ">=22.12.0",
+    "pnpm": ">=9 <10"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "dev:web": "pnpm --filter @mpforge/web run dev",
+    "demo": "pnpm --filter @mpforge/web run demo",
+    "demo:build": "pnpm --filter @mpforge/web run build:demo",
+    "dev:electron": "pnpm --filter mpforge-desktop run dev -- --dev",
+    "dev:desktop": "node scripts/run-desktop-dev.mjs",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run lint && pnpm --filter @mpforge/web exec tsc -b --pretty false",
+    "test": "turbo run test:ci --concurrency=1 --continue=always",
+    "test:e2e": "playwright test --config tests/e2e/playwright.config.ts",
+    "mpforge": "pnpm --filter @mpforge/cli run build && node apps/cli/dist/index.js",
+    "public:audit": "node scripts/audit-public-boundary.mjs",
+    "public:history": "node scripts/scan-public-history.mjs --require-complete",
+    "public:source": "node scripts/build-public-source.mjs",
+    "release:metadata": "node scripts/generate-release-metadata.mjs",
+    "qa": "node --test scripts/qa-checks.test.mjs && node scripts/check-secrets.mjs && node scripts/check-large-files.mjs && node scripts/check-licenses.mjs && node scripts/check-forbidden-wechat-capabilities.mjs",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@playwright/test": "1.62.1",
+    "eslint": "^9.17.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.16",
+    "globals": "^16.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.0.0",
+    "turbo": "^2.7.2",
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.50.0",
+    "wait-on": "^7.0.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "fast-xml-parser@4": "4.5.7",
+      "fast-xml-parser@5": "5.11.1",
+      "linkify-it@5": "5.0.2",
+      "dompurify@3": "3.4.15",
+      "lodash-es@4": "4.18.1",
+      "uuid@11": "11.1.1"
+    }
+  },
+  "lint-staged": {
+    "apps/web/**/*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "packages/core/**/*.{ts,js}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css}": [
+      "prettier --write"
+    ]
+  }
+}

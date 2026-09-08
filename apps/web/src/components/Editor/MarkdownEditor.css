@@ -1,0 +1,430 @@
+.markdown-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg-primary);
+  border: 0;
+
+  /* 编辑器块级装饰配色。底色一律用半透明，让下层的选区仍能透出来 */
+  --editor-code-bg: rgba(26, 28, 28, 0.035);
+  --editor-code-border: rgba(26, 28, 28, 0.09);
+  --editor-quote-bar: rgba(26, 28, 28, 0.2);
+  --editor-inline-code-bg: rgba(26, 28, 28, 0.055);
+  --editor-inline-code-fg: #b0413a;
+  --editor-list-marker: #5b6862;
+
+  /* 提示块沿用预览端的色相语言（见 packages/core themes 的 callout-*） */
+  --editor-alert-note: #6366f1;
+  --editor-alert-tip: #0f9d63;
+  --editor-alert-important: #8b5cf6;
+  --editor-alert-warning: #b3720a;
+  --editor-alert-caution: #dc2626;
+}
+
+[data-ui-theme="dark"] .markdown-editor {
+  --editor-code-bg: rgba(255, 255, 255, 0.04);
+  --editor-code-border: rgba(255, 255, 255, 0.08);
+  --editor-quote-bar: rgba(255, 255, 255, 0.22);
+  --editor-inline-code-bg: rgba(255, 255, 255, 0.08);
+  --editor-inline-code-fg: #e0a07a;
+  --editor-list-marker: #9aa8a0;
+
+  --editor-alert-note: #8b93f8;
+  --editor-alert-tip: #35c391;
+  --editor-alert-important: #b191f9;
+  --editor-alert-warning: #e0a83c;
+  --editor-alert-caution: #f27272;
+}
+
+.editor-header {
+  min-height: 42px;
+  padding: 0 18px;
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--border-light) 72%, transparent);
+  background: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.editor-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.editor-title::before {
+  content: "";
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  box-shadow: 0 0 0 2px
+    color-mix(in srgb, var(--accent-primary) 16%, transparent);
+}
+
+.editor-container {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.editor-body-wrapper {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  /* Critical for flex scrolling */
+}
+
+.editor-container.guarded {
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+.workspace-guard {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.75),
+    rgba(255, 255, 255, 0.9)
+  );
+  z-index: 2;
+  backdrop-filter: blur(6px);
+}
+
+.workspace-guard-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px 24px;
+  box-shadow: 0 12px 40px -18px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  text-align: center;
+  max-width: 320px;
+}
+
+.guard-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #1a1a1a;
+}
+
+.guard-subtitle {
+  font-size: 13px;
+  color: #4a5568;
+  margin-bottom: 12px;
+}
+
+/* CodeMirror 自定义样式 */
+.editor-container .cm-editor {
+  height: 100%;
+}
+
+.editor-container .cm-scroller {
+  overflow: auto;
+  padding-bottom: 40px;
+  /* 底部留白 */
+}
+
+/* 优雅的滚动条 */
+.editor-container .cm-scroller::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.editor-container .cm-scroller::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.editor-container .cm-scroller::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  transition: background 0.2s ease;
+}
+
+.editor-container .cm-scroller::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.editor-container .cm-content {
+  padding: 32px clamp(28px, 6vw, 56px) 72px !important;
+  max-width: 760px;
+  margin: 0 auto;
+  line-height: 1.85;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  /* Maple Mono 默认开大量连字，会把 `<!--` `!==` `=>` 合成单字形。
+     这是 Markdown 源码编辑器，必须逐字符可辨，所以关掉 */
+  font-variant-ligatures: none;
+  font-feature-settings:
+    "calt" 0,
+    "liga" 0;
+  /* 等宽字体下适当收小字号 */
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+.editor-container .cm-line {
+  padding: 0 2px;
+}
+
+/* 光标加粗，避免默认发丝线在等宽正文里过弱 */
+.editor-container .cm-cursor,
+.editor-container .cm-dropCursor {
+  border-left-width: 2px;
+}
+
+/* === Markdown 块级装饰 ===
+   token 级配色在 markdownTheme.ts；整行底色只能靠 Decoration.line，
+   类名由 editorMarkdownDecorations.ts 挂载。
+   块的左右描边要逐行铺，只有首尾行才补上下描边和圆角，拼起来才是一张完整的卡片 */
+.editor-container .cm-md-code-line {
+  --code-sides:
+    inset 1px 0 0 var(--editor-code-border),
+    inset -1px 0 0 var(--editor-code-border);
+  background: var(--editor-code-bg);
+  box-shadow: var(--code-sides);
+  padding: 0 14px;
+}
+
+.editor-container .cm-md-code-line.cm-md-block-first {
+  box-shadow:
+    var(--code-sides),
+    inset 0 1px 0 var(--editor-code-border);
+}
+
+.editor-container .cm-md-code-line.cm-md-block-last {
+  box-shadow:
+    var(--code-sides),
+    inset 0 -1px 0 var(--editor-code-border);
+}
+
+.editor-container .cm-md-code-line.cm-md-block-first.cm-md-block-last {
+  box-shadow:
+    var(--code-sides),
+    inset 0 1px 0 var(--editor-code-border),
+    inset 0 -1px 0 var(--editor-code-border);
+}
+
+/* === 标题 ===
+   字号只在这里定义，markdownTheme.ts 只管字重和颜色 */
+.editor-container .cm-md-heading-line {
+  font-size: calc(1em * var(--heading-scale));
+  /* 标题领起一节，靠上间距建立文档节奏 */
+  padding-top: var(--heading-space);
+}
+
+/* 文档首行是标题时不要多出一截顶部留白 */
+.editor-container .cm-md-heading-line:first-child {
+  padding-top: 0;
+}
+
+/* `#` 标记跟随标题字号，不做任何缩放：同一行里字号不一致会显得没对齐。
+   标记靠颜色弱化（processingInstruction 的淡色），不靠尺寸。 */
+.editor-container .cm-md-heading-1 {
+  --heading-scale: 1.5;
+  --heading-space: 22px;
+}
+
+.editor-container .cm-md-heading-2 {
+  --heading-scale: 1.32;
+  --heading-space: 18px;
+}
+
+.editor-container .cm-md-heading-3 {
+  --heading-scale: 1.18;
+  --heading-space: 15px;
+}
+
+.editor-container .cm-md-heading-4 {
+  --heading-scale: 1.08;
+  --heading-space: 13px;
+}
+
+.editor-container .cm-md-heading-5 {
+  --heading-scale: 1;
+  --heading-space: 11px;
+}
+
+.editor-container .cm-md-heading-6 {
+  --heading-scale: 0.94;
+  --heading-space: 11px;
+}
+
+/* 列表标记比其他标记更实：它表达文档结构，有序列表的数字还携带顺序信息。
+   内层还有 processingInstruction 的高亮 span，颜色要连后代一起写 */
+.editor-container .cm-md-list-marker,
+.editor-container .cm-md-list-marker span {
+  color: var(--editor-list-marker);
+  font-weight: 500;
+}
+
+/* 引用只用一条竖线表达层级，不铺底色，避免整行色块喧宾夺主 */
+.editor-container .cm-md-quote-line {
+  padding-left: 14px;
+  box-shadow: inset 2px 0 0 var(--editor-quote-bar);
+}
+
+/* 提示块按类型换色相，和右侧预览的 callout 对得上 */
+.editor-container .cm-md-alert-line {
+  padding-left: 14px;
+  background: color-mix(in srgb, var(--editor-alert-hue) 7%, transparent);
+  box-shadow: inset 2px 0 0 var(--editor-alert-hue);
+}
+
+/* 有底色的块（代码块、提示块）首尾行补上下留白和圆角，才收得住 */
+.editor-container .cm-md-code-line.cm-md-block-first,
+.editor-container .cm-md-alert-line.cm-md-block-first {
+  padding-top: 10px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.editor-container .cm-md-code-line.cm-md-block-last,
+.editor-container .cm-md-alert-line.cm-md-block-last {
+  padding-bottom: 10px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.editor-container .cm-md-alert-note {
+  --editor-alert-hue: var(--editor-alert-note);
+}
+
+.editor-container .cm-md-alert-tip {
+  --editor-alert-hue: var(--editor-alert-tip);
+}
+
+.editor-container .cm-md-alert-important {
+  --editor-alert-hue: var(--editor-alert-important);
+}
+
+.editor-container .cm-md-alert-warning {
+  --editor-alert-hue: var(--editor-alert-warning);
+}
+
+.editor-container .cm-md-alert-caution {
+  --editor-alert-hue: var(--editor-alert-caution);
+}
+
+/* `[!TIP]` 标记本身也上色。内层还有引用 token 的高亮 span，
+   必须连后代一起改写才压得住 */
+.editor-container .cm-md-alert-marker,
+.editor-container .cm-md-alert-marker span {
+  color: var(--editor-alert-hue);
+  font-weight: 600;
+  font-style: normal;
+}
+
+.editor-container .cm-md-inline-code {
+  background: var(--editor-inline-code-bg);
+  color: var(--editor-inline-code-fg);
+  border-radius: 4px;
+  padding: 1px 4px;
+}
+
+/* === 编辑器底部状态栏 === */
+.editor-footer {
+  min-height: 32px;
+  padding: 0 18px;
+  border-top: 1px solid color-mix(in srgb, var(--border-light) 70%, transparent);
+  background: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.editor-stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.editor-stat {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+/* 保存状态指示器 */
+.save-indicator {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  transition: all 0.2s ease;
+}
+
+.save-indicator.saved {
+  color: var(--text-tertiary);
+}
+
+.save-indicator.saving {
+  color: var(--accent-primary);
+  background: rgba(7, 193, 96, 0.1);
+}
+
+.save-indicator.unsaved {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.save-indicator.ready {
+  color: var(--text-tertiary);
+}
+
+/* ========================================
+   深色模式 - 编辑器样式覆盖
+   ======================================== */
+[data-ui-theme="dark"] .editor-header {
+  background: var(--bg-primary);
+}
+
+[data-ui-theme="dark"] .editor-footer {
+  background: var(--bg-primary);
+}
+
+[data-ui-theme="dark"] .workspace-guard {
+  background: linear-gradient(
+    180deg,
+    rgba(30, 30, 30, 0.75),
+    rgba(30, 30, 30, 0.9)
+  );
+}
+
+[data-ui-theme="dark"] .workspace-guard-card {
+  background: #2d2d30;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-ui-theme="dark"] .guard-title {
+  color: #d4d4d4;
+}
+
+[data-ui-theme="dark"] .guard-subtitle {
+  color: #9d9d9d;
+}
+
+/* 滚动条 - 深色模式 */
+[data-ui-theme="dark"] .editor-container .cm-scroller::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+[data-ui-theme="dark"]
+  .editor-container
+  .cm-scroller::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}

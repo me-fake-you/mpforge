@@ -1,0 +1,28 @@
+{
+  "name": "@mpforge/renderer",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "pnpm --filter @wemd/core build && pnpm --filter @mpforge/themes build && tsc",
+    "lint": "pnpm --filter @wemd/core build && pnpm --filter @mpforge/themes build && tsc --noEmit",
+    "test:ci": "vitest run"
+  },
+  "dependencies": {
+    "@mpforge/themes": "workspace:*",
+    "@wemd/core": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "vitest": "^4.0.16"
+  }
+}

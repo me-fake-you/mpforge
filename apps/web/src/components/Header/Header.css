@@ -1,0 +1,540 @@
+.app-header {
+  height: 54px;
+  margin: 16px 28px 0;
+  border: 1px solid color-mix(in srgb, var(--border-color) 72%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--bg-primary) 92%, transparent);
+  box-shadow: 0 8px 24px -18px rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 calc(14px + var(--titlebar-right-inset, 0px)) 0
+    calc(18px + var(--titlebar-left-inset, 0px));
+  position: sticky;
+  top: 16px;
+  z-index: 100;
+  transition:
+    transform 200ms cubic-bezier(0.25, 1, 0.5, 1),
+    opacity 160ms ease,
+    margin 200ms ease;
+  -webkit-app-region: drag;
+}
+
+.app-header.header-auto-hide {
+  transform: translateY(calc(-100% - 18px));
+  opacity: 0;
+  pointer-events: none;
+  margin-top: -54px;
+}
+
+/* 隐藏标题栏保持在常规流中，Windows 窗控由内容宽度自然撑开，拖拽区占满剩余空间 */
+.hidden-titlebar {
+  flex: 0 0 0px;
+  display: flex;
+  min-height: 0;
+  transition: flex-basis 200ms ease;
+}
+
+.hidden-titlebar.is-active {
+  flex-basis: 36px;
+}
+
+.hidden-titlebar-drag-region {
+  flex: 1 1 auto;
+  min-width: 0;
+  -webkit-app-region: drag;
+}
+
+.header-left,
+.header-actions,
+.header-right,
+.logo,
+.header-nav {
+  display: flex;
+  align-items: center;
+}
+
+.header-left {
+  gap: 14px;
+  min-width: 0;
+}
+
+.header-actions {
+  height: 100%;
+}
+
+.header-right {
+  gap: 6px;
+}
+
+.logo {
+  gap: 8px;
+  min-width: 0;
+}
+
+.logo-mark {
+  width: 28px;
+  height: 28px;
+  flex: none;
+  object-fit: contain;
+}
+
+.logo-text {
+  color: var(--text-primary);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.1em;
+  font-kerning: normal;
+  font-feature-settings:
+    "kern" 1,
+    "liga" 1;
+  white-space: nowrap;
+}
+
+.header-divider {
+  width: 1px;
+  height: 18px;
+  flex: none;
+  background: var(--border-light);
+}
+
+.header-nav {
+  gap: 2px;
+}
+
+.header-nav-button {
+  height: 30px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+
+.header-nav-button:hover,
+.header-nav-button:focus-visible {
+  background: var(--bg-hover);
+  color: var(--accent-primary);
+}
+
+.app-header button,
+.app-header a,
+.app-header input,
+.app-header select,
+.app-header textarea,
+.app-header [role="button"],
+.app-header svg,
+.app-header .logo,
+.app-header .header-left,
+.app-header .header-right,
+.app-header .window-controls {
+  -webkit-app-region: no-drag;
+}
+
+.btn-icon-only,
+.btn-ghost {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.btn-icon-only {
+  border: 1px solid var(--border-light);
+  background: var(--bg-primary);
+}
+
+.btn-icon-only:hover,
+.btn-icon-only:focus-visible {
+  border-color: color-mix(
+    in srgb,
+    var(--accent-primary) 45%,
+    var(--border-light)
+  );
+  background: var(--bg-hover);
+  color: var(--accent-primary);
+}
+
+.app-header .header-theme-toggle {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.app-header .header-theme-toggle:hover {
+  border-color: var(--border-light);
+  background: var(--bg-hover);
+  color: var(--accent-primary);
+}
+
+.app-header .header-theme-toggle:focus-visible {
+  border-color: var(--border-light);
+  background: transparent;
+  color: var(--text-primary);
+}
+
+.btn-secondary,
+.btn-primary {
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 9px;
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease,
+    transform 120ms ease;
+}
+
+.btn-secondary {
+  border: 1px solid var(--border-light);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus-visible {
+  border-color: var(--border-light);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.btn-primary {
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 82%, #000);
+  background: var(--accent-primary);
+  color: var(--on-accent);
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  background: var(--accent-active);
+}
+
+.app-header .header-action-button {
+  border-radius: 9px;
+  background-image: none;
+  box-shadow: none;
+}
+
+.app-header .header-action-secondary {
+  border: 1px solid color-mix(in srgb, var(--border-light) 72%, transparent);
+  background-color: transparent;
+  color: var(--text-secondary);
+}
+
+.app-header .header-action-secondary:hover,
+.app-header .header-action-secondary:focus-visible {
+  border-color: var(--border-light);
+  background-color: color-mix(in srgb, var(--bg-hover) 78%, transparent);
+  color: var(--text-primary);
+}
+
+.app-header .header-theme-toggle:focus-visible,
+.app-header .header-action-button:focus-visible,
+.app-header .btn-ghost:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.app-header .header-action-primary {
+  border-color: color-mix(in srgb, var(--accent-primary) 82%, #000);
+  background-color: var(--accent-primary);
+  /* 仅主 CTA 使用极淡强调色渐变 + 柔投影表达层级；其余顶栏按钮保持扁平 */
+  background-image: var(--accent-gradient);
+  color: var(--on-accent);
+  box-shadow: 0 6px 16px -10px
+    color-mix(in srgb, var(--accent-primary) 70%, transparent);
+  transition:
+    box-shadow 180ms ease,
+    transform 140ms ease;
+}
+
+.app-header .header-action-primary:hover,
+.app-header .header-action-primary:focus-visible {
+  box-shadow: 0 10px 22px -10px
+    color-mix(in srgb, var(--accent-primary) 78%, transparent);
+  transform: translateY(-1px);
+}
+
+.app-header .header-action-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px -8px
+    color-mix(in srgb, var(--accent-primary) 70%, transparent);
+}
+
+.btn-primary:active,
+.btn-secondary:active,
+.btn-icon-only:active,
+.btn-ghost:active {
+  transform: translateY(1px);
+}
+
+.btn-icon-only svg,
+.btn-primary svg,
+.btn-secondary svg,
+.btn-ghost svg {
+  width: 16px;
+  height: 16px;
+}
+
+.btn-ghost {
+  border: 0;
+}
+
+.btn-ghost:hover,
+.btn-ghost:focus-visible {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* 顶栏纯图标按钮的样式化 tooltip（在按钮下方展开，兼容 Electron 无边框窗口） */
+.app-header [data-tooltip] {
+  position: relative;
+}
+
+.app-header [data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(-4px);
+  transition:
+    opacity 120ms ease,
+    transform 120ms ease;
+  z-index: 200;
+}
+
+.app-header [data-tooltip]:hover::after,
+.app-header [data-tooltip]:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.floating-toolbar {
+  position: fixed;
+  top: 16px;
+  right: 24px;
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: floating-toolbar-in 220ms cubic-bezier(0.25, 1, 0.5, 1) both;
+  /* 浮动工具栏覆盖隐藏标题栏时仍需保持可点击 */
+  -webkit-app-region: no-drag;
+}
+
+@keyframes floating-toolbar-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 逐个错开淡入，弹出更有层次 */
+.floating-toolbar .floating-btn {
+  animation: floating-btn-in 260ms cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+.floating-toolbar .floating-btn:nth-child(1) {
+  animation-delay: 20ms;
+}
+.floating-toolbar .floating-btn:nth-child(2) {
+  animation-delay: 55ms;
+}
+.floating-toolbar .floating-btn:nth-child(3) {
+  animation-delay: 90ms;
+}
+.floating-toolbar .floating-btn:nth-child(4) {
+  animation-delay: 125ms;
+}
+.floating-toolbar .floating-btn:nth-child(5) {
+  animation-delay: 160ms;
+}
+.floating-toolbar .floating-btn:nth-child(n + 6) {
+  animation-delay: 195ms;
+}
+
+@keyframes floating-btn-in {
+  from {
+    opacity: 0;
+    transform: translateX(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.floating-toolbar.floating-toolbar-win {
+  top: 40px;
+}
+
+.floating-btn {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--bg-primary) 94%, transparent);
+  color: var(--text-secondary);
+  box-shadow: 0 6px 16px -12px rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 120ms ease;
+}
+
+.floating-btn:hover,
+.floating-btn:focus-visible {
+  border-color: color-mix(
+    in srgb,
+    var(--accent-primary) 50%,
+    var(--border-light)
+  );
+  background: var(--bg-primary);
+  color: var(--accent-primary);
+  transform: translateY(-1px);
+}
+
+.floating-btn-primary {
+  border-color: var(--accent-primary);
+  background: var(--accent-primary);
+  color: var(--on-accent);
+}
+
+.floating-btn-show {
+  border-color: color-mix(
+    in srgb,
+    var(--accent-primary) 55%,
+    var(--border-light)
+  );
+  color: var(--accent-primary);
+}
+
+.floating-btn[data-tooltip] {
+  position: relative;
+}
+
+.floating-btn[data-tooltip]::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 8px);
+  transform: translateY(-50%) translateX(4px);
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 120ms ease,
+    transform 120ms ease;
+}
+
+.floating-btn[data-tooltip]:hover::before {
+  opacity: 1;
+  transform: translateY(-50%);
+}
+
+@media (max-width: 980px) {
+  .btn-secondary span {
+    display: none;
+  }
+
+  .btn-secondary {
+    width: 34px;
+    padding: 0;
+    border-color: var(--border-light);
+    background: var(--bg-primary);
+  }
+}
+
+@media (max-width: 768px) {
+  /* 仅真实移动布局(触屏窄屏)才收起顶栏能力;桌面浏览器拖窄窗口保持完整顶栏 */
+  .app[data-layout-mode="mobile"] .app-header {
+    height: 50px;
+    margin: 8px 8px 0;
+    padding: 0 10px;
+    top: 8px;
+  }
+
+  .app[data-layout-mode="mobile"] .app-header.header-auto-hide {
+    margin-top: -50px;
+  }
+
+  .app[data-layout-mode="mobile"] .logo-text {
+    font-size: 0.875rem;
+  }
+
+  .app[data-layout-mode="mobile"] .header-nav,
+  .app[data-layout-mode="mobile"] .header-divider {
+    display: none;
+  }
+
+  .app[data-layout-mode="mobile"] .btn-secondary,
+  .app[data-layout-mode="mobile"] .btn-primary,
+  .app[data-layout-mode="mobile"] .btn-ghost {
+    display: none;
+  }
+
+  .app[data-layout-mode="mobile"] .window-controls {
+    margin-right: -10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-header,
+  .app-header *,
+  .floating-toolbar,
+  .floating-toolbar * {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

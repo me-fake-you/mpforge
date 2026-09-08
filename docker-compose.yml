@@ -1,0 +1,13 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        MPFORGE_NETWORK_MODE: mock-only
+        MPFORGE_REAL_WECHAT_DISABLED: "true"
+        MPFORGE_DEMO_MODE: "true"
+    image: mpforge-web:0.1.0-local
+    ports:
+      - "${MPFORGE_PORT:-8080}:80"
+    restart: unless-stopped

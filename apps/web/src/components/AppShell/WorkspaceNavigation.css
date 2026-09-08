@@ -1,0 +1,104 @@
+.workspace-navigation {
+  min-height: 48px;
+  margin: 10px 28px 0;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border: 1px solid color-mix(in srgb, var(--border-light) 80%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--bg-primary) 88%, transparent);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.workspace-navigation__brand,
+.workspace-navigation__brand > span:last-child,
+.workspace-navigation__destinations,
+.workspace-navigation__button {
+  display: flex;
+  align-items: center;
+}
+
+.workspace-navigation__brand {
+  flex: none;
+  gap: 9px;
+  color: var(--text-primary);
+}
+
+.workspace-navigation__brand > span:last-child {
+  align-items: flex-start;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.workspace-navigation__brand strong {
+  font:
+    650 12px/1.2 "JetBrains Mono",
+    monospace;
+  letter-spacing: 0.04em;
+}
+
+.workspace-navigation__brand small {
+  color: var(--text-tertiary);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.workspace-navigation__brand-mark {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: var(--accent-primary);
+  color: var(--on-accent);
+  font:
+    700 10px/1 "JetBrains Mono",
+    monospace;
+  letter-spacing: -0.04em;
+}
+
+.workspace-navigation__destinations {
+  gap: 4px;
+}
+
+.workspace-navigation__button {
+  height: 32px;
+  gap: 6px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 550;
+  white-space: nowrap;
+}
+
+.workspace-navigation__button:hover,
+.workspace-navigation__button:focus-visible {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+
+.workspace-navigation__button[data-active="true"] {
+  color: var(--accent-primary);
+  background: color-mix(in srgb, var(--accent-primary) 10%, transparent);
+}
+
+@media (max-width: 960px) {
+  .workspace-navigation {
+    margin: 8px 12px 0;
+  }
+
+  .workspace-navigation__brand {
+    display: none;
+  }
+
+  .workspace-navigation__destinations {
+    min-width: max-content;
+  }
+}

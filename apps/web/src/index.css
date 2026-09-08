@@ -1,0 +1,188 @@
+/* Minimal CSS reset */
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* 桌面布局有最小内容宽度,视口更窄时由 #root 整体横向滚动,
+   避免顶栏与三栏元素被挤压重叠 */
+#root {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light;
+
+  /* ========================================
+     DEFAULT UI THEME (Current Style)
+     ======================================== */
+
+  /* Colors */
+  --ui-bg-page: #f9f9f9;
+  --ui-bg-primary: #ffffff;
+  --ui-bg-secondary: #f3f3f3;
+  --ui-bg-tertiary: #eeeeee;
+  --ui-bg-card-muted: #e8e8e8;
+  --ui-bg-hover: #eeeeee;
+
+  --ui-text-primary: #1a1c1c;
+  --ui-text-secondary: #3d4a3f;
+  --ui-text-tertiary: #5f6d61;
+
+  --ui-border-color: #e2e2e2;
+  --ui-border-light: #e2e2e2;
+
+  --ui-accent-primary: #047857;
+  --ui-accent-hover: #006d3d;
+  --ui-accent-active: #006d3d;
+  --ui-accent-gradient: linear-gradient(135deg, #047857 0%, #006d3d 100%);
+  --ui-on-accent: #ffffff;
+
+  /* Borders & Radius */
+  --ui-border-width: 1px;
+  --ui-radius-sm: 8px;
+  --ui-radius-md: 12px;
+  --ui-radius-lg: 16px;
+  --ui-radius-xl: 24px;
+  --ui-radius-pill: 999px;
+
+  /* Shadows */
+  --ui-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --ui-shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --ui-shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --ui-shadow-xl:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Fonts */
+  --ui-font-sans:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "Roboto",
+    "Helvetica Neue", sans-serif;
+  /* Maple Mono 为本地打包的等宽字体，只含 latin 子集；
+     后面是系统等宽兜底（字体未加载完 / 加载失败时用）。
+     CJK 必须显式兜底，否则通用 monospace 在 Windows 会落到 SimSun */
+  --ui-font-mono:
+    "Maple Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC",
+    monospace;
+
+  /* Spacing */
+  --ui-spacing-unit: 8px;
+  --ui-glass-blur: blur(20px);
+
+  /* Legacy variables for backward compatibility */
+  --bg-page: var(--ui-bg-page);
+  --bg-primary: var(--ui-bg-primary);
+  --bg-secondary: var(--ui-bg-secondary);
+  --bg-tertiary: var(--ui-bg-tertiary);
+  --bg-card-muted: var(--ui-bg-card-muted);
+  --bg-hover: var(--ui-bg-hover);
+  --text-primary: var(--ui-text-primary);
+  --text-secondary: var(--ui-text-secondary);
+  --text-tertiary: var(--ui-text-tertiary);
+  --border-light: var(--ui-border-light);
+  --border-color: var(--ui-border-color);
+  --accent-primary: var(--ui-accent-primary);
+  --accent-gradient: var(--ui-accent-gradient);
+  --on-accent: var(--ui-on-accent);
+  --shadow-sm: var(--ui-shadow-sm);
+  --shadow-md: var(--ui-shadow-md);
+  --shadow-lg: var(--ui-shadow-lg);
+  --shadow-xl: var(--ui-shadow-xl);
+  --radius-sm: var(--ui-radius-sm);
+  --radius-md: var(--ui-radius-md);
+  --radius-lg: var(--ui-radius-lg);
+  --radius-xl: var(--ui-radius-xl);
+  --radius-pill: var(--ui-radius-pill);
+  --border-width: var(--ui-border-width);
+  --spacing-xs: calc(var(--ui-spacing-unit) * 0.5);
+  --spacing-sm: var(--ui-spacing-unit);
+  --spacing-md: calc(var(--ui-spacing-unit) * 2);
+  --spacing-lg: calc(var(--ui-spacing-unit) * 3);
+  --spacing-xl: calc(var(--ui-spacing-unit) * 4);
+  --spacing-xxl: calc(var(--ui-spacing-unit) * 5);
+  --font-mono: var(--ui-font-mono);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========================================
+   DARK UI THEME (参考 VS Code 配色)
+   ======================================== */
+[data-ui-theme="dark"] {
+  color-scheme: dark;
+
+  /* Colors - VS Code 风格深色背景（不那么刺眼） */
+  --ui-bg-page: #1e1e1e;
+  --ui-bg-primary: #252526;
+  --ui-bg-secondary: #2d2d30;
+  --ui-bg-tertiary: #333333;
+  --ui-bg-card-muted: #2a2a2b;
+  --ui-bg-hover: #2a3a2e;
+
+  /* Colors - 柔和的浅色文字 */
+  --ui-text-primary: #d4d4d4;
+  --ui-text-secondary: #9d9d9d;
+  --ui-text-tertiary: #949494;
+
+  /* 边框 - 柔和的深色调 */
+  --ui-border-color: #3c3c3c;
+  --ui-border-light: #404040;
+
+  /* 暗色界面使用更沉稳的翡翠绿，并配套高对比深色前景 */
+  --ui-accent-primary: #13a072;
+  --ui-accent-hover: #20ad80;
+  --ui-accent-active: #15966a;
+  --ui-accent-gradient: linear-gradient(135deg, #13a072 0%, #15966a 100%);
+  --ui-on-accent: #0b1f16;
+
+  /* Borders & Radius - 保持与默认主题一致 */
+  --ui-border-width: 1px;
+  --ui-radius-sm: 8px;
+  --ui-radius-md: 12px;
+  --ui-radius-lg: 16px;
+  --ui-radius-xl: 24px;
+  --ui-radius-pill: 999px;
+
+  /* Shadows - 深色模式阴影 */
+  --ui-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --ui-shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --ui-shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --ui-shadow-xl:
+    0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+
+  /* Fonts - 保持默认 */
+  --ui-font-sans:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "Roboto",
+    "Helvetica Neue", sans-serif;
+  /* Maple Mono 为本地打包的等宽字体，只含 latin 子集；
+     后面是系统等宽兜底（字体未加载完 / 加载失败时用）。
+     CJK 必须显式兜底，否则通用 monospace 在 Windows 会落到 SimSun */
+  --ui-font-mono:
+    "Maple Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC",
+    monospace;
+  --ui-spacing-unit: 8px;
+  --ui-glass-blur: blur(20px);
+
+  /* 玻璃效果变量 - 深色模式 */
+  --glass-bg: rgba(37, 37, 38, 0.95);
+  --glass-border: rgba(60, 60, 60, 0.6);
+  --glass-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}

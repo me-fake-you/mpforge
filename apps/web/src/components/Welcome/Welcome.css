@@ -1,0 +1,88 @@
+.welcome-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+}
+
+.welcome-titlebar {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 1;
+  height: 36px;
+  display: flex;
+  align-items: center;
+}
+
+.welcome-titlebar-drag-region {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  -webkit-app-region: drag;
+}
+
+.welcome-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.welcome-logo {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 8px;
+}
+
+.welcome-content h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.welcome-content p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.welcome-content .btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: var(--accent-primary);
+  color: var(--on-accent);
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 82%, #000);
+  border-radius: 9px;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    transform 120ms ease;
+}
+
+.welcome-content .btn-primary:hover {
+  background: var(--accent-active);
+}
+
+.welcome-content .btn-primary:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.welcome-content .btn-primary:active {
+  transform: translateY(1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-content .btn-primary {
+    transition: none;
+  }
+}

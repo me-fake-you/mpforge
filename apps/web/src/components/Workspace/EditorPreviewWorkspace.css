@@ -1,0 +1,69 @@
+.workspace {
+  --workspace-divider-width: 16px;
+  display: grid;
+  grid-template-columns:
+    var(--editor-pane-width, calc((100% - 16px) * 0.58))
+    var(--workspace-divider-width)
+    minmax(0, 1fr);
+  gap: 0;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+}
+
+/* 评分侧栏接管预览列时彻底让位，[hidden] 会被面板自身的 display 覆盖 */
+.workspace .preview-pane[hidden] {
+  display: none;
+}
+
+.workspace-resize-handle {
+  position: relative;
+  height: 100%;
+  cursor: col-resize;
+  touch-action: none;
+  outline: none;
+}
+
+.workspace-resize-handle__line {
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  left: 50%;
+  width: 1px;
+  border-radius: var(--radius-pill);
+  background: var(--border-light);
+  transform: translateX(-50%);
+  transition:
+    width 0.15s ease,
+    background 0.15s ease;
+}
+
+.workspace-resize-handle:hover .workspace-resize-handle__line,
+.workspace-resize-handle:focus-visible .workspace-resize-handle__line,
+.workspace.is-resizing .workspace-resize-handle__line {
+  width: 3px;
+  background: var(--accent-primary);
+}
+
+.workspace-resize-handle:focus-visible {
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 2px
+    color-mix(in srgb, var(--accent-primary) 42%, transparent);
+}
+
+.workspace.is-resizing,
+.workspace.is-resizing * {
+  cursor: col-resize !important;
+  user-select: none !important;
+}
+
+.workspace.is-resizing .editor-pane,
+.workspace.is-resizing .preview-pane {
+  transition: none;
+}
+
+@media (max-width: 768px) {
+  .app[data-layout-mode="mobile"] .workspace-resize-handle {
+    display: none;
+  }
+}

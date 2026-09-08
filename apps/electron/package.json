@@ -1,0 +1,36 @@
+{
+  "name": "mpforge-desktop",
+  "private": true,
+  "version": "0.1.0",
+  "description": "MPForge - Content-as-Code WeChat draft workbench",
+  "main": "dist/main.js",
+  "author": "MPForge contributors (based on WeMD)",
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "lint": "tsc --noEmit",
+    "test": "rimraf dist && tsc && node --test dist/**/*.test.js",
+    "test:ci": "pnpm run test",
+    "dev": "node ../../scripts/install-electron-runtime.mjs && rimraf dist && tsc && electron .",
+    "start": "node ../../scripts/install-electron-runtime.mjs && electron .",
+    "build:mac": "npm run build && electron-builder --mac --arm64 -c electron-builder.json",
+    "build:win": "npm run build && electron-builder --win -c electron-builder.json",
+    "build:linux": "npm run build && electron-builder --linux -c electron-builder.json"
+  },
+  "keywords": [
+    "markdown",
+    "wechat",
+    "editor"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@mpforge/cli": "workspace:*",
+    "@mpforge/media": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "electron": "44.2.0",
+    "electron-builder": "^24.13.3",
+    "rimraf": "^6.0.0",
+    "typescript": "^5.0.0"
+  }
+}

@@ -1,0 +1,9 @@
+packages:
+  # Keep this list explicit. apps/server was inherited with ambiguous license
+  # metadata and must never re-enter the public workspace through a wildcard.
+  - "apps/cli"
+  - "apps/electron"
+  - "apps/mcp"
+  - "apps/mock-wechat"
+  - "apps/web"
+  - "packages/*"

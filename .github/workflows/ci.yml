@@ -1,0 +1,104 @@
+name: MPForge CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  npm_config_cache: ${{ github.workspace }}/.cache/npm
+  PNPM_STORE_DIR: ${{ github.workspace }}/.cache/pnpm-store
+  COREPACK_HOME: ${{ github.workspace }}/.cache/corepack
+  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/playwright
+  ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
+  ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
+  TMPDIR: ${{ github.workspace }}/tmp
+  MPFORGE_NETWORK_MODE: mock-only
+  MPFORGE_REAL_WECHAT_DISABLED: "true"
+  MPFORGE_DEMO_MODE: "true"
+
+jobs:
+  verify:
+    name: Lint, typecheck, test, build, and browser E2E
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Prepare project-local directories and pnpm
+        shell: bash
+        run: |
+          mkdir -p .cache/npm .cache/pnpm-store .cache/corepack .cache/playwright .cache/electron .cache/electron-builder tmp
+          corepack enable
+          corepack prepare pnpm@9.0.2 --activate
+          pnpm config set store-dir "$PNPM_STORE_DIR"
+
+      - name: Restore project-local dependency caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            .cache/npm
+            .cache/pnpm-store
+            .cache/corepack
+            .cache/playwright
+            .cache/electron
+            .cache/electron-builder
+          key: mpforge-ci-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            mpforge-ci-${{ runner.os }}-
+
+      - name: Install locked dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install pinned Chromium into the workspace cache
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Run unit and integration tests
+        run: pnpm test
+
+      - name: Build Web, Desktop, CLI, MCP, and Mock components
+        run: pnpm build
+
+      - name: Scan the built Web bundle for credentials
+        run: node scripts/check-frontend-bundle-secrets.mjs
+
+      - name: Run Chromium E2E adapter-contract suite in Mock-only mode
+        env:
+          MPFORGE_ACTOR_TYPE: ci
+          MPFORGE_DEMO_MODE: "false"
+        run: pnpm test:e2e
+
+      - name: Run Chromium public Demo isolation suite
+        env:
+          MPFORGE_ACTOR_TYPE: ci
+          MPFORGE_DEMO_MODE: "true"
+        run: pnpm test:e2e tests/e2e/workspace-flow.spec.ts
+
+      - name: Check repository consistency
+        shell: bash
+        run: |
+          git fsck --full
+          git diff --check

@@ -1,0 +1,99 @@
+.sidebar-footer {
+  min-height: 44px;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 0;
+  background: transparent;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.footer-logo img {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.footer-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.footer-version {
+  font-size: 9px;
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  /* 关掉 Maple Mono 连字，等宽场景需要逐字符可辨 */
+  font-variant-ligatures: none;
+  font-feature-settings:
+    "calt" 0,
+    "liga" 0;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.footer-links a:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.footer-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  position: relative;
+  text-decoration: none;
+}
+
+/* Footer Tooltips */
+.footer-links a::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  padding: 4px 8px;
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.15s,
+    visibility 0.15s,
+    transform 0.15s;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.footer-links a:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-4px);
+}

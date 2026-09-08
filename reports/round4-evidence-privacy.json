@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-04T07:53:20.394Z",
+  "source": "MPForge browser-only Demo Mode",
+  "network_policy": "localhost-only",
+  "external_requests_observed": [],
+  "screenshots": [
+    {
+      "filename": "dashboard.png",
+      "size": 196939,
+      "sha256": "103895357e2a4eb58f22c754ead9bdea67601495eff986e2c714ab5df2d795c0"
+    },
+    {
+      "filename": "web-demo.png",
+      "size": 196939,
+      "sha256": "103895357e2a4eb58f22c754ead9bdea67601495eff986e2c714ab5df2d795c0"
+    },
+    {
+      "filename": "editor.png",
+      "size": 143226,
+      "sha256": "62e56b89f1ad68453fe0c9d991a5deef6caa319626250798b4c1b2f252d5113a"
+    },
+    {
+      "filename": "preview-light.png",
+      "size": 45115,
+      "sha256": "c916f868ddaa6c8a05394e9a17b49c7f96d3a644217aaca139326cbeb74f1fe1"
+    },
+    {
+      "filename": "preview-dark.png",
+      "size": 45335,
+      "sha256": "97e6bcba084855b1e51d378ebed15bf0f63e4f5b93e4dedff1b6b97b75d21637"
+    },
+    {
+      "filename": "linter.png",
+      "size": 72200,
+      "sha256": "74f19375e1194d1734afaece3997cf47507550d752abbe5bc452040c965d31bd"
+    },
+    {
+      "filename": "approval.png",
+      "size": 125266,
+      "sha256": "7fb16cda85d0dd6af088aee1c36eefe89e1f8922cf413f75ffd16aa84343038c"
+    },
+    {
+      "filename": "assets.png",
+      "size": 94103,
+      "sha256": "fa90ffcd0569f2d8b12814882876e9ea53b4ad7005f9a71b11b8922836bd9c82"
+    },
+    {
+      "filename": "mock-draft-plan.png",
+      "size": 86515,
+      "sha256": "171da78c6372ab48f028dfbcbb1fe2ac6de071c1bd1138b97d1cbaac06d524d6"
+    },
+    {
+      "filename": "mock-upload.png",
+      "size": 86065,
+      "sha256": "e758b78ed9133ac7679d1ccfa8af1ba833ef5187c3a2cc6cc967dadc2cccbf1a"
+    },
+    {
+      "filename": "mock-draft.png",
+      "size": 86065,
+      "sha256": "e758b78ed9133ac7679d1ccfa8af1ba833ef5187c3a2cc6cc967dadc2cccbf1a"
+    },
+    {
+      "filename": "mock-duplicate-prevention.png",
+      "size": 86515,
+      "sha256": "171da78c6372ab48f028dfbcbb1fe2ac6de071c1bd1138b97d1cbaac06d524d6"
+    },
+    {
+      "filename": "mock-receipt.png",
+      "size": 73213,
+      "sha256": "c90695a0e94dc6ef8c5c7a76d324bf4f6d81b909bbf93259a95b07f56e574b91"
+    },
+    {
+      "filename": "reconciliation.png",
+      "size": 87811,
+      "sha256": "0854a23312de358db485111e99f577358d6a974bfa32f73c9c67646fc605ae69"
+    },
+    {
+      "filename": "windows-app.png",
+      "size": 786699,
+      "sha256": "e4e043e9840e2de81e8fde2692c63ab8dbea366961601134809f47deafdc0939"
+    },
+    {
+      "filename": "release-install-test.png",
+      "size": 786699,
+      "sha256": "e4e043e9840e2de81e8fde2692c63ab8dbea366961601134809f47deafdc0939"
+    }
+  ],
+  "visible_text_privacy_findings": [],
+  "summary": "PASS",
+  "desktop_runtime_version": "44.2.0",
+  "desktop_verified_at": "2026-09-08T07:08:42.963Z"
+}

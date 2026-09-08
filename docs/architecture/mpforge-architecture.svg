@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">MPForge Content-as-Code architecture</title>
+  <desc id="desc">Git-tracked article source passes through deterministic schema, media, renderer, and linter packages to local interfaces, human approval, draft adapters, and redacted receipts. Formal broadcast remains human-only.</desc>
+  <metadata>Original MPForge architecture diagram; MIT licensed with this repository. Editable text source: mpforge-architecture.mmd.</metadata>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#35635a"/></marker>
+    <style>
+      .label{font-family:Segoe UI,Arial,sans-serif;fill:#17241f;text-anchor:middle}.small{font-size:20px}.title{font-size:30px;font-weight:700}.group{fill:#f5f8f6;stroke:#9bb3aa;stroke-width:3}.node{fill:#fff;stroke:#35635a;stroke-width:3}.gate{fill:#fff8e8;stroke:#a66a17;stroke-width:3}.mock{fill:#edf7f1;stroke:#357351;stroke-width:3}.real{fill:#fff1ef;stroke:#9a4b45;stroke-width:3}.edge{fill:none;stroke:#35635a;stroke-width:4;marker-end:url(#arrow)}.dash{stroke-dasharray:10 8}
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="#fbfcfb"/>
+  <text x="800" y="55" class="label title">MPForge: reviewed, reproducible, auditable drafts</text>
+
+  <rect x="45" y="105" width="350" height="650" rx="28" class="group"/>
+  <text x="220" y="148" class="label title">Git-tracked source</text>
+  <rect x="90" y="200" width="260" height="125" rx="18" class="node"/>
+  <text x="220" y="252" class="label small">article.md</text><text x="220" y="282" class="label small">frontmatter + Markdown</text>
+  <rect x="90" y="380" width="260" height="110" rx="18" class="node"/>
+  <text x="220" y="430" class="label small">assets/</text><text x="220" y="460" class="label small">local + provenance</text>
+  <rect x="90" y="545" width="260" height="110" rx="18" class="node"/>
+  <text x="220" y="595" class="label small">audit.jsonl</text><text x="220" y="625" class="label small">status events</text>
+
+  <rect x="455" y="105" width="430" height="650" rx="28" class="group"/>
+  <text x="670" y="148" class="label title">Deterministic core</text>
+  <rect x="510" y="190" width="320" height="95" rx="18" class="node"/>
+  <text x="670" y="230" class="label small">content-schema</text><text x="670" y="258" class="label small">validation + state machine</text>
+  <rect x="510" y="325" width="320" height="95" rx="18" class="node"/>
+  <text x="670" y="365" class="label small">media</text><text x="670" y="393" class="label small">resolve + hash + convert</text>
+  <rect x="510" y="460" width="320" height="95" rx="18" class="node"/>
+  <text x="670" y="500" class="label small">renderer + 4 themes</text><text x="670" y="528" class="label small">light + dark output</text>
+  <rect x="510" y="595" width="320" height="95" rx="18" class="node"/>
+  <text x="670" y="635" class="label small">deterministic linter</text><text x="670" y="663" class="label small">ERROR blocks drafts</text>
+
+  <rect x="945" y="105" width="300" height="300" rx="28" class="group"/>
+  <text x="1095" y="148" class="label title">Local interfaces</text>
+  <rect x="990" y="185" width="210" height="55" rx="14" class="node"/><text x="1095" y="220" class="label small">Web / Electron</text>
+  <rect x="990" y="255" width="210" height="55" rx="14" class="node"/><text x="1095" y="290" class="label small">CLI</text>
+  <rect x="990" y="325" width="210" height="55" rx="14" class="node"/><text x="1095" y="360" class="label small">MCP Server</text>
+
+  <path d="M395 262 H510" class="edge"/>
+  <path d="M395 435 H455 V372 H510" class="edge"/>
+  <path d="M830 237 H870 V460 H830" class="edge"/>
+  <path d="M670 420 V460" class="edge"/>
+  <path d="M670 555 V595" class="edge"/>
+  <path d="M1095 380 V400 H900 V642 H830" class="edge"/>
+  <path d="M350 655 V790 H920 V700 H975" class="edge dash"/>
+
+  <polygon points="1095,430 1225,510 1095,590 965,510" class="gate"/>
+  <text x="1095" y="500" class="label small">clean lint +</text><text x="1095" y="530" class="label small">complete preview?</text>
+  <path d="M830 642 H920 V510 H965" class="edge"/>
+  <rect x="1320" y="200" width="230" height="90" rx="18" class="node"/>
+  <text x="1435" y="240" class="label small">Copy Mode</text><text x="1435" y="268" class="label small">no account effect</text>
+  <path d="M1225 510 H1280 V245 H1320" class="edge"/>
+
+  <polygon points="1095,625 1215,700 1095,775 975,700" class="gate"/>
+  <text x="1095" y="692" class="label small">human</text><text x="1095" y="722" class="label small">approved?</text>
+  <path d="M1095 590 V625" class="edge"/>
+
+  <rect x="1320" y="490" width="230" height="90" rx="18" class="mock"/>
+  <text x="1435" y="530" class="label small">Mock WeChat</text><text x="1435" y="558" class="label small">local tests</text>
+  <rect x="1320" y="620" width="230" height="90" rx="18" class="real"/>
+  <text x="1435" y="660" class="label small">Real draft adapter</text><text x="1435" y="688" class="label small">server credentials</text>
+  <path d="M1215 700 H1260 V535 H1320" class="edge"/><path d="M1215 700 H1320" class="edge"/>
+
+  <rect x="1320" y="770" width="230" height="80" rx="18" class="node"/>
+  <text x="1435" y="805" class="label small">redacted receipt</text><text x="1435" y="832" class="label small">hashes, no secrets</text>
+  <path d="M1435 580 H1580 V810 H1550" class="edge"/>
+  <path d="M1435 710 V770" class="edge"/>
+
+  <text x="800" y="850" class="label small">Formal broadcast is not automated; a human completes publication in the WeChat admin console.</text>
+</svg>

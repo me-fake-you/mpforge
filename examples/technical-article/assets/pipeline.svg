@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" role="img" aria-labelledby="title desc">
+  <metadata>Original MPForge example artwork; MIT licensed with this repository.</metadata>
+  <title id="title">确定性文章构建流程</title>
+  <desc id="desc">Markdown 依次经过解析、主题、清理，输出带哈希的 HTML。</desc>
+  <rect width="960" height="420" rx="32" fill="#0f172a"/>
+  <g font-family="Arial, sans-serif" font-size="28" text-anchor="middle">
+    <g fill="#e2e8f0" stroke="#38bdf8" stroke-width="3">
+      <rect x="55" y="145" width="180" height="110" rx="18"/><rect x="280" y="145" width="180" height="110" rx="18"/>
+      <rect x="505" y="145" width="180" height="110" rx="18"/><rect x="730" y="145" width="180" height="110" rx="18"/>
+    </g>
+    <g fill="#f8fafc"><text x="145" y="210">Markdown</text><text x="370" y="210">AST</text><text x="595" y="210">Sanitize</text><text x="820" y="210">SHA-256</text></g>
+    <g stroke="#f59e0b" stroke-width="8" stroke-linecap="round"><path d="M240 200h30"/><path d="M465 200h30"/><path d="M690 200h30"/></g>
+  </g>
+</svg>

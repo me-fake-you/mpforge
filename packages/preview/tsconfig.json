@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "declaration": true,
+    "outDir": "./dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "@mpforge/linter": ["../linter/dist/index.d.ts"],
+      "@mpforge/renderer": ["../renderer/dist/index.d.ts"]
+    }
+  },
+  "include": ["src/**/*"]
+}

@@ -1,0 +1,49 @@
+flowchart LR
+  subgraph source["Git-tracked source"]
+    md["article.md\nfrontmatter + Markdown"]
+    assets["assets/\nlocal + provenance"]
+    audit["audit.jsonl\nstatus events"]
+  end
+
+  subgraph core["Deterministic headless core"]
+    schema["content-schema\nvalidation + state machine"]
+    media["media\nresolve + hash + convert"]
+    renderer["renderer + 4 themes\nlight / dark"]
+    linter["linter\nERROR gate"]
+  end
+
+  subgraph interfaces["Local interfaces"]
+    web["Web / Electron"]
+    cli["CLI"]
+    mcp["MCP Server"]
+  end
+
+  approval{"Human approved?"}
+  preview{"Preview complete?\nLint clean?"}
+  copy["Copy Mode\nno account side effect"]
+  mock["Mock WeChat\nlocal test service"]
+  real["Real draft adapter\nserver-side credentials"]
+  receipt["redacted receipt\nhashes + result"]
+  admin["Human publishes in\nWeChat admin console"]
+
+  md --> schema
+  assets --> media
+  schema --> renderer
+  media --> renderer
+  renderer --> linter
+  md --> linter
+  audit --> approval
+  web --> schema
+  web --> renderer
+  cli --> schema
+  cli --> linter
+  mcp --> renderer
+  mcp --> linter
+  linter --> preview
+  preview --> copy
+  preview --> approval
+  approval --> mock
+  approval --> real
+  mock --> receipt
+  real --> receipt
+  receipt -. no automatic broadcast .-> admin

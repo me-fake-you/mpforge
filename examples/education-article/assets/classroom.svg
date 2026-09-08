@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" role="img" aria-labelledby="title desc">
+  <metadata>Original MPForge example artwork; MIT licensed with this repository.</metadata>
+  <title id="title">Python 条件判断课堂任务</title>
+  <desc id="desc">温度输入经过条件判断，得到三种衣物建议。</desc>
+  <rect width="960" height="420" rx="32" fill="#eff6ff"/>
+  <rect x="70" y="70" width="820" height="280" rx="24" fill="#fff" stroke="#2563eb" stroke-width="4"/>
+  <g font-family="Arial, sans-serif" fill="#1e3a8a" text-anchor="middle"><text x="480" y="132" font-size="34" font-weight="700">temperature</text><text x="480" y="198" font-size="28">&lt; 10　　&lt; 20　　else</text><text x="480" y="276" font-size="26">厚外套　→　薄外套　→　短袖</text></g>
+</svg>

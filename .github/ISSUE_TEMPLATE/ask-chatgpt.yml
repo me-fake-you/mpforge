@@ -1,0 +1,101 @@
+name: ChatGPT bridge test or escalation
+description: Record a public-safe bridge request and its verifiable nonce
+title: "[Ask ChatGPT] "
+labels: ["ask-chatgpt", "bridge-test"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Creating this issue does not prove a ChatGPT bridge is configured or healthy. Mark a bridge HEALTHY only after ChatGPT has actually read and answered the request and Codex has read the answer. Never include secrets or private content.
+  - type: input
+    id: request_id
+    attributes:
+      label: request_id
+      description: Stable unique identifier for this escalation.
+    validations:
+      required: true
+  - type: input
+    id: project_id
+    attributes:
+      label: project_id
+      description: Stable public project identifier.
+      value: mpforge
+    validations:
+      required: true
+  - type: input
+    id: public_repository
+    attributes:
+      label: public_repository
+      description: Exact public owner/repository name.
+      placeholder: owner/mpforge
+    validations:
+      required: true
+  - type: input
+    id: commit_sha
+    attributes:
+      label: commit_sha
+      description: Exact commit that contains the evidence.
+    validations:
+      required: true
+  - type: input
+    id: nonce
+    attributes:
+      label: random nonce
+      description: A newly generated nonce that appears nowhere else.
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        Bridge request: `BRIDGE_PING`
+
+        Expected response: `CHATGPT_ACK:<same nonce>`
+  - type: textarea
+    id: exact_question
+    attributes:
+      label: exact_question
+      description: One concrete question whose answer changes the next safe action.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: evidence
+      description: Public-safe file references, commands, errors, and results.
+    validations:
+      required: true
+  - type: textarea
+    id: attempted_fixes
+    attributes:
+      label: attempted_fixes
+    validations:
+      required: true
+  - type: textarea
+    id: available_options
+    attributes:
+      label: available_options
+      description: Enumerate mutually exclusive paths and their tradeoffs.
+    validations:
+      required: true
+  - type: textarea
+    id: sol_recommendation
+    attributes:
+      label: sol_recommendation
+    validations:
+      required: true
+  - type: textarea
+    id: safe_default
+    attributes:
+      label: safe_default
+      description: What MPForge will do if no answer arrives.
+    validations:
+      required: true
+  - type: checkboxes
+    id: bridge_safety
+    attributes:
+      label: Bridge safety
+      options:
+        - label: This issue contains no credentials, private content, local absolute paths, cookies, or real account receipts.
+          required: true
+        - label: I will keep the status PENDING until Codex has read a real response containing this exact nonce.
+          required: true

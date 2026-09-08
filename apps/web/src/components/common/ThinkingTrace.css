@@ -1,0 +1,74 @@
+.thinking-trace {
+  margin-bottom: 8px;
+}
+
+.thinking-trace-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: -4px;
+  padding: 3px 4px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-tertiary);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    background 160ms ease;
+}
+
+.thinking-trace-toggle:hover {
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+}
+
+.thinking-trace-caret {
+  flex: none;
+  transition: transform 200ms ease;
+}
+
+.thinking-trace.is-open .thinking-trace-caret {
+  transform: rotate(90deg);
+}
+
+/* 0fr → 1fr 是给未知高度做平滑展开的正确写法，比 max-height 估值干净 */
+.thinking-trace-shell {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 400ms cubic-bezier(0.23, 1, 0.32, 1),
+    opacity 400ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.thinking-trace.is-open .thinking-trace-shell {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.thinking-trace-clip {
+  overflow: hidden;
+}
+
+.thinking-trace-body {
+  max-height: 180px;
+  margin: 4px 0 0 5px;
+  padding: 2px 0 2px 12px;
+  overflow-y: auto;
+  border-left: 1px solid var(--border-light);
+  color: var(--text-tertiary);
+  font-size: 11px;
+  line-height: 18px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thinking-trace-shell,
+  .thinking-trace-caret {
+    transition: none;
+  }
+}

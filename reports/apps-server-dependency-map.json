@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "audited_commit": "7cf4c57c3f1da98530ddeef5dc3be06a8941e653",
+  "pinned_upstream_commit": "964525d80ef63477c3a4b0327fe2a43415ee2bad",
+  "component": {
+    "path": "apps/server",
+    "package": "@wemd/server",
+    "version": "1.1.8",
+    "private_at_upstream_pin": true,
+    "license_at_upstream_pin": "UNLICENSED",
+    "license_in_audited_manifest": "MIT",
+    "license_conclusion": "LICENSE_AMBIGUOUS",
+    "public_release_status": "EXCLUDE"
+  },
+  "audited_tree": {
+    "tracked_file_count": 26,
+    "tracked_byte_count": 353371,
+    "source_file_count": 12,
+    "uploaded_media_count": 3,
+    "uploaded_media_rights": "UNVERIFIED_EXCLUDE"
+  },
+  "workspace_edges": {
+    "former_membership_rule": "apps/*",
+    "inbound_package_dependencies": [],
+    "root_task_edges": [
+      "turbo run build",
+      "turbo run lint",
+      "turbo run test:ci"
+    ],
+    "conclusion": "The server was included by workspace discovery, not by an application dependency."
+  },
+  "direct_production_dependencies": [
+    "@nestjs/common",
+    "@nestjs/config",
+    "@nestjs/core",
+    "@nestjs/mapped-types",
+    "@nestjs/platform-express",
+    "cos-nodejs-sdk-v5",
+    "reflect-metadata",
+    "rxjs"
+  ],
+  "direct_development_dependencies": [
+    "@eslint/eslintrc",
+    "@eslint/js",
+    "@nestjs/cli",
+    "@nestjs/schematics",
+    "@nestjs/testing",
+    "@types/express",
+    "@types/jest",
+    "@types/multer",
+    "@types/node",
+    "@types/supertest",
+    "eslint",
+    "eslint-config-prettier",
+    "eslint-plugin-prettier",
+    "globals",
+    "jest",
+    "prettier",
+    "source-map-support",
+    "supertest",
+    "ts-jest",
+    "ts-loader",
+    "ts-node",
+    "tsconfig-paths",
+    "typescript",
+    "typescript-eslint"
+  ],
+  "behavioral_adjacency": [
+    {
+      "consumer": "apps/web/src/services/image/uploaders/OfficialUploader.ts",
+      "contract": "HTTP POST to a configured server URL plus /upload",
+      "package_import": false,
+      "required_for_v0_1_core": false,
+      "follow_up": "Remove the provider or present it only as an explicitly configured external endpoint."
+    }
+  ],
+  "build_surfaces": [
+    {
+      "surface": "Dockerfile",
+      "dependency": false,
+      "evidence": "The image copies packages and apps/web only."
+    },
+    {
+      "surface": "docker-compose.yml",
+      "dependency": false,
+      "evidence": "The compose service runs a Web image only."
+    },
+    {
+      "surface": "Electron package",
+      "dependency": false,
+      "evidence": "The package boundary contains desktop runtime files and Web output, not apps/server."
+    },
+    {
+      "surface": "CI and release root tasks",
+      "dependency": "WORKSPACE_DISCOVERY_ONLY",
+      "evidence": "Root Turbo commands included the server while the wildcard workspace rule was active."
+    },
+    {
+      "surface": "GitHub Pages",
+      "dependency": false,
+      "evidence": "The Pages build targets apps/web."
+    }
+  ],
+  "scheme": {
+    "selected": "A_REMOVE",
+    "independent_reimplementation_required": false,
+    "written_upstream_permission_requested": false
+  },
+  "verification": {
+    "public_tree_absent": "PASS",
+    "lock_importer_absent": "PASS",
+    "tests_after_removal": "PASS",
+    "builds_after_removal": "PASS",
+    "public_history_absent": "PASS",
+    "release_artifacts_absent": "PASS",
+    "github_source_archive_absent": "ONLINE_GATE"
+  }
+}

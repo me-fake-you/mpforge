@@ -1,0 +1,353 @@
+name: MPForge v0.1.0 verified release
+
+# Candidate construction never publishes. The final job can create the public
+# Release only for an exact version tag after every source and artifact gate
+# succeeds and the owner-controlled authorization variable is enabled.
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v0.1.0"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-candidate-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  npm_config_cache: ${{ github.workspace }}/.cache/npm
+  PNPM_STORE_DIR: ${{ github.workspace }}/.cache/pnpm-store
+  COREPACK_HOME: ${{ github.workspace }}/.cache/corepack
+  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/playwright
+  ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
+  ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
+  TMPDIR: ${{ github.workspace }}/tmp
+  TMP: ${{ github.workspace }}/tmp
+  TEMP: ${{ github.workspace }}/tmp
+  MPFORGE_NETWORK_MODE: mock-only
+  MPFORGE_REAL_WECHAT_DISABLED: "true"
+  MPFORGE_DEMO_MODE: "true"
+
+jobs:
+  source-gates:
+    name: Verify source, tests, history, and public boundary
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Checkout full public history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Prepare project-local directories and pnpm
+        shell: bash
+        run: |
+          mkdir -p .cache/npm .cache/pnpm-store .cache/corepack .cache/playwright .cache/electron .cache/electron-builder tmp
+          corepack enable
+          corepack prepare pnpm@9.0.2 --activate
+          pnpm config set store-dir "$PNPM_STORE_DIR"
+
+      - name: Restore project-local dependency caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            .cache/npm
+            .cache/pnpm-store
+            .cache/corepack
+            .cache/playwright
+          key: mpforge-release-source-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            mpforge-release-source-${{ runner.os }}-
+
+      - name: Install locked dependencies and Chromium
+        shell: bash
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm exec playwright install --with-deps chromium
+
+      - name: Run complete source gates
+        shell: bash
+        run: |
+          pnpm lint
+          pnpm typecheck
+          pnpm test
+          pnpm qa
+          node --test scripts/release-metadata-policy.test.mjs
+          pnpm audit --prod --audit-level high --registry=https://registry.npmjs.org
+          node --test scripts/check-shipped-runtime.test.mjs
+          node scripts/check-shipped-runtime.mjs
+          pnpm build
+          node scripts/check-frontend-bundle-secrets.mjs
+
+      - name: Run browser adapter-contract E2E in Mock-only mode
+        env:
+          MPFORGE_DEMO_MODE: "false"
+        run: pnpm test:e2e
+
+      - name: Run browser public Demo isolation E2E
+        env:
+          MPFORGE_DEMO_MODE: "true"
+        run: pnpm test:e2e tests/e2e/workspace-flow.spec.ts
+
+      - name: Audit public tree and public Git history
+        shell: bash
+        run: |
+          node scripts/audit-public-boundary.mjs
+          node scripts/scan-public-history.mjs --require-complete
+
+      - name: Confirm the release source is immutable and clean
+        shell: bash
+        run: |
+          git diff --check
+          test -z "$(git status --porcelain --untracked-files=no)" || {
+            echo "Tracked files changed while running release gates."
+            git status --short
+            exit 1
+          }
+
+  verify-and-build-windows:
+    name: Build and verify Windows candidate
+    needs: source-gates
+    runs-on: windows-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout the exact verified commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Prepare project-local directories and pnpm
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force .cache/npm,.cache/pnpm-store,.cache/corepack,.cache/playwright,.cache/electron,.cache/electron-builder,tmp,release/staging | Out-Null
+          corepack enable
+          corepack prepare pnpm@9.0.2 --activate
+          pnpm config set store-dir "$env:PNPM_STORE_DIR"
+
+      - name: Restore project-local dependency caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            .cache/npm
+            .cache/pnpm-store
+            .cache/corepack
+            .cache/electron
+            .cache/electron-builder
+          key: mpforge-release-windows-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            mpforge-release-windows-${{ runner.os }}-
+
+      - name: Install locked dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate v0.1.0 product metadata
+        shell: pwsh
+        run: |
+          $Config = Get-Content -Raw apps/electron/electron-builder.json | ConvertFrom-Json
+          $Package = Get-Content -Raw apps/electron/package.json | ConvertFrom-Json
+          if ($Package.version -ne "0.1.0") { throw "Expected desktop version 0.1.0" }
+          if ($Config.productName -ne "MPForge") { throw "Desktop productName is not MPForge" }
+          if ($Config.appId -eq "com.wemd.app") { throw "Inherited Electron appId is not releasable" }
+          if ($Package.name -match "wemd") { throw "Inherited Electron package name is not releasable" }
+          if ($env:GITHUB_REF_TYPE -eq "tag" -and $env:GITHUB_REF_NAME -ne "v$($Package.version)") {
+            throw "Tag and package version do not match"
+          }
+
+      - name: Build Web, Desktop, CLI, MCP, and Mock components
+        shell: pwsh
+        run: |
+          $PSNativeCommandUseErrorActionPreference = $true
+          pnpm build
+          node scripts/check-frontend-bundle-secrets.mjs
+
+      - name: Prove the Windows Web bundle is Mock-only
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import { readdirSync, readFileSync } from "node:fs";
+          import { join } from "node:path";
+          const directory = "apps/web/dist";
+          const files = readdirSync(directory, { recursive: true }).filter((name) => /\.(?:html|js|css|json|webmanifest)$/u.test(name));
+          const bundle = files.map((name) => readFileSync(join(directory, name), "utf8")).join("\n");
+          if (!/DEMO\s*\/\s*MOCK/iu.test(bundle)) throw new Error("Windows Web bundle has no DEMO / MOCK marker");
+          const forbidden = ["api.weixin.qq.com", "api.openai.com", "api.deepseek.com", "open.bigmodel.cn", "api.moonshot.cn", "dashscope.aliyuncs.com", "api.siliconflow.cn", "openrouter.ai"];
+          if (forbidden.some((endpoint) => bundle.includes(endpoint))) throw new Error("External API endpoints remain in the Windows Demo bundle");
+          NODE
+
+      - name: Audit and install the exact shipped Electron runtime
+        shell: pwsh
+        env:
+          ELECTRON_MIRROR: https://github.com/electron/electron/releases/download/
+          electron_config_cache: ${{ github.workspace }}/.cache/electron
+        run: |
+          $PSNativeCommandUseErrorActionPreference = $true
+          node scripts/check-shipped-runtime.mjs
+          pnpm --dir apps/electron exec install-electron
+          node -e 'const { execFileSync } = require("node:child_process"); const expected = require("./apps/electron/package.json").devDependencies.electron; const binary = require("./apps/electron/node_modules/electron"); const actual = execFileSync(binary, ["-p", "process.versions.electron"], { env: { ...process.env, ELECTRON_RUN_AS_NODE: "1" }, windowsHide: true, encoding: "utf8" }).trim(); if (actual !== expected) throw new Error("Installed Electron binary does not match the runtime pin"); console.log("Verified Electron binary " + actual);'
+
+      - name: Package verified unsigned Windows installer and portable ZIP
+        shell: pwsh
+        run: pnpm --dir apps/electron exec electron-builder --win --x64 -c electron-builder.json --publish never
+
+      - name: Stage exact public artifact names
+        shell: pwsh
+        run: |
+          $Version = "0.1.0"
+          $Installer = @(Get-ChildItem -File apps/electron/release/*.exe)
+          $Portable = @(Get-ChildItem -File apps/electron/release/*.zip)
+          if ($Installer.Count -ne 1) { throw "Expected exactly one Windows installer" }
+          if ($Portable.Count -ne 1) { throw "Expected exactly one Windows ZIP" }
+          Copy-Item -LiteralPath $Installer[0].FullName -Destination "release/staging/MPForge.Setup.$Version.exe"
+          Copy-Item -LiteralPath $Portable[0].FullName -Destination "release/staging/MPForge-Portable-$Version-win-x64.zip"
+          $Signature = Get-AuthenticodeSignature -LiteralPath "release/staging/MPForge.Setup.$Version.exe"
+          if ($Signature.Status -ne "NotSigned") {
+            throw "The unsigned v0.1.0 workflow produced an unexpected signature state: $($Signature.Status)"
+          }
+
+      - name: Smoke-test portable and installed applications
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $env:APPDATA = Join-Path $env:GITHUB_WORKSPACE "tmp/appdata"
+          $env:LOCALAPPDATA = Join-Path $env:GITHUB_WORKSPACE "tmp/localappdata"
+          New-Item -ItemType Directory -Force $env:APPDATA,$env:LOCALAPPDATA | Out-Null
+
+          function Stop-MPForgeProcesses([string] $Root) {
+            $ResolvedRoot = [IO.Path]::GetFullPath($Root)
+            Get-CimInstance Win32_Process | Where-Object {
+              $_.ExecutablePath -and [IO.Path]::GetFullPath($_.ExecutablePath).StartsWith($ResolvedRoot, [StringComparison]::OrdinalIgnoreCase)
+            } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+          }
+
+          $PortableRoot = Join-Path $env:GITHUB_WORKSPACE "tmp/portable-smoke"
+          Expand-Archive -LiteralPath "release/staging/MPForge-Portable-0.1.0-win-x64.zip" -DestinationPath $PortableRoot
+          $PortableExe = Get-ChildItem -LiteralPath $PortableRoot -Filter MPForge.exe -File -Recurse | Select-Object -First 1
+          if (-not $PortableExe) { throw "Portable archive has no MPForge.exe" }
+          $PortableProcess = Start-Process -FilePath $PortableExe.FullName -ArgumentList "--disable-gpu" -WindowStyle Hidden -PassThru
+          Start-Sleep -Seconds 8
+          if ($PortableProcess.HasExited) { throw "Portable application exited during startup" }
+          Stop-MPForgeProcesses $PortableRoot
+
+          $InstallRoot = Join-Path $env:GITHUB_WORKSPACE "tmp/install-smoke/MPForge"
+          New-Item -ItemType Directory -Force (Split-Path $InstallRoot) | Out-Null
+          $InstallProcess = Start-Process -FilePath "release/staging/MPForge.Setup.0.1.0.exe" -ArgumentList @("/S", "/D=$InstallRoot") -WindowStyle Hidden -PassThru -Wait
+          if ($InstallProcess.ExitCode -ne 0) { throw "Installer exit code $($InstallProcess.ExitCode)" }
+          $InstalledExe = Join-Path $InstallRoot "MPForge.exe"
+          if (-not (Test-Path -LiteralPath $InstalledExe)) { throw "Installed MPForge.exe is missing" }
+          $AppProcess = Start-Process -FilePath $InstalledExe -ArgumentList "--disable-gpu" -WindowStyle Hidden -PassThru
+          Start-Sleep -Seconds 8
+          if ($AppProcess.HasExited) { throw "Installed application exited during startup" }
+          Stop-MPForgeProcesses $InstallRoot
+          $Uninstaller = Get-ChildItem -LiteralPath $InstallRoot -Filter "*ninstall*.exe" -File | Select-Object -First 1
+          if (-not $Uninstaller) { throw "Uninstaller is missing" }
+          $UninstallProcess = Start-Process -FilePath $Uninstaller.FullName -ArgumentList "/S" -WindowStyle Hidden -PassThru -Wait
+          if ($UninstallProcess.ExitCode -ne 0) { throw "Uninstaller exit code $($UninstallProcess.ExitCode)" }
+          for ($Attempt = 0; $Attempt -lt 15 -and (Test-Path -LiteralPath $InstalledExe); $Attempt += 1) {
+            Start-Sleep -Seconds 1
+          }
+          if (Test-Path -LiteralPath $InstalledExe) { throw "Installed executable remains after uninstall" }
+
+      - name: Generate licensed SBOMs, build provenance, and checksums
+        shell: pwsh
+        run: |
+          $PSNativeCommandUseErrorActionPreference = $true
+          node scripts/generate-release-metadata.mjs --verified --with-artifacts --output-dir release/staging --artifact-dir release/staging
+
+      - name: Verify release metadata, license evidence, and exact artifact hashes
+        shell: pwsh
+        run: |
+          $PSNativeCommandUseErrorActionPreference = $true
+          node scripts/verify-release-metadata.mjs release/staging
+
+      - name: Scan exact release staging contents
+        shell: pwsh
+        run: |
+          $PSNativeCommandUseErrorActionPreference = $true
+          node scripts/build-public-source.mjs --commit $env:GITHUB_SHA
+          node scripts/audit-public-boundary.mjs --artifacts release/staging --require-complete
+          $SourceRoot = [IO.Path]::GetFullPath((Join-Path $env:GITHUB_WORKSPACE "release/staging/public-source"))
+          $ExpectedRoot = (Resolve-Path -LiteralPath release/staging/public-source).Path
+          if ($ExpectedRoot -ne $SourceRoot) { throw "Unexpected public source staging directory" }
+          Remove-Item -LiteralPath $SourceRoot -Recurse -Force
+          git diff --exit-code
+
+      - name: Upload verified candidate without publishing a Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: mpforge-v0.1.0-candidate-${{ github.sha }}
+          path: release/staging/
+          if-no-files-found: error
+          retention-days: 14
+
+  publish-release:
+    name: Publish verified GitHub Release
+    needs: [source-gates, verify-and-build-windows]
+    if: startsWith(github.ref, 'refs/tags/v') && vars.MPFORGE_PUBLIC_RELEASE_AUTHORIZED == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout the exact verified tag
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Download the verified Windows candidate
+        uses: actions/download-artifact@v4
+        with:
+          name: mpforge-v0.1.0-candidate-${{ github.sha }}
+          path: release-artifacts
+
+      - name: Verify tag, expected files, and SHA-256 manifest
+        shell: bash
+        run: |
+          test "${GITHUB_REF_NAME}" = "v0.1.0"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          for file in \
+            MPForge.Setup.0.1.0.exe \
+            MPForge-Portable-0.1.0-win-x64.zip \
+            SHA256SUMS \
+            RELEASE_MANIFEST.json \
+            BUILD_INFO.json \
+            PROVENANCE.json \
+            sbom-source.spdx.json \
+            sbom-runtime.cdx.json; do
+            test -f "release-artifacts/$file"
+          done
+          (cd release-artifacts && sha256sum --check SHA256SUMS)
+          node scripts/verify-release-metadata.mjs release-artifacts
+
+      - name: Create immutable public v0.1.0 Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            release-artifacts/MPForge.Setup.0.1.0.exe \
+            release-artifacts/MPForge-Portable-0.1.0-win-x64.zip \
+            release-artifacts/SHA256SUMS \
+            release-artifacts/RELEASE_MANIFEST.json \
+            release-artifacts/BUILD_INFO.json \
+            release-artifacts/PROVENANCE.json \
+            release-artifacts/sbom-source.spdx.json \
+            release-artifacts/sbom-runtime.cdx.json \
+            --verify-tag \
+            --title "MPForge v0.1.0" \
+            --notes-file docs/launch/github-release-post.md
