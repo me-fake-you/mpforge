@@ -97,7 +97,7 @@
       "id": "private-email",
       "expression": "\\b[A-Z0-9._%+-]+@(?!example\\.(?:com|org|net)|example\\.invalid|users\\.noreply\\.github\\.com)[A-Z0-9.-]+\\.[A-Z]{2,}\\b",
       "flags": "gi",
-      "allowed_values": ["vast@whiteants.net", "i@izs.me"]
+      "allowed_values": ["vast@whiteants.net", "i@izs.me", "support@github.com", "noreply@github.com"]
     },
     {
       "id": "china-mobile",

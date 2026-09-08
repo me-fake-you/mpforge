@@ -78,7 +78,7 @@ jobs:
         run: |
           pnpm lint
           pnpm typecheck
-          pnpm test
+          MPFORGE_DEMO_MODE=false VITE_MPFORGE_DEMO_MODE=false pnpm test
           pnpm qa
           node --test scripts/release-metadata-policy.test.mjs
           pnpm audit --prod --audit-level high --registry=https://registry.npmjs.org

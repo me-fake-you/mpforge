@@ -70,10 +70,17 @@ jobs:
           node scripts/audit-public-boundary.mjs
           node scripts/scan-public-history.mjs --require-complete
 
-      - name: Test and build the Web demo
+      - name: Run Web unit tests with the controlled desktop contracts
+        env:
+          MPFORGE_DEMO_MODE: "false"
+          VITE_MPFORGE_DEMO_MODE: "false"
         shell: bash
         run: |
           pnpm exec turbo run test:ci --filter=@mpforge/web
+
+      - name: Typecheck and build the Web demo
+        shell: bash
+        run: |
           pnpm --dir apps/web lint
           pnpm --dir apps/web exec tsc -b --pretty false
           pnpm --dir apps/web build

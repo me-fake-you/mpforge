@@ -140,6 +140,32 @@ test("Docker context evaluation honors ordered default-deny exceptions", () => {
   );
 });
 
+test("public GitHub bot identities are exact exceptions, not a domain-wide email exemption", () => {
+  for (const address of ["support@github.com", "noreply@github.com"]) {
+    const findings = validateSourceBuffer(
+      "docs/bot.md",
+      Buffer.from(address),
+      policies,
+    );
+    assert.equal(
+      findings.some((finding) => finding.rule === "private-email"),
+      false,
+    );
+  }
+  for (const address of [
+    ["personal", "github.com"].join("@"),
+    ["support", "github.com.invalid"].join("@"),
+    ["prefixsupport", "github.com"].join("@"),
+  ]) {
+    const findings = validateSourceBuffer(
+      "docs/bot.md",
+      Buffer.from(address),
+      policies,
+    );
+    assert.ok(findings.some((finding) => finding.rule === "private-email"));
+  }
+});
+
 test("source maps and embedded private paths fail source validation", () => {
   const sourceMap = Buffer.from(
     JSON.stringify({

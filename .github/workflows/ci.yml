@@ -77,6 +77,9 @@ jobs:
         run: pnpm typecheck
 
       - name: Run unit and integration tests
+        env:
+          MPFORGE_DEMO_MODE: "false"
+          VITE_MPFORGE_DEMO_MODE: "false"
         run: pnpm test
 
       - name: Build Web, Desktop, CLI, MCP, and Mock components

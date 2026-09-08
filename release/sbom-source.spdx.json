@@ -3,9 +3,9 @@
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
   "name": "MPForge-source-0.1.0",
-  "documentNamespace": "https://github.com/me-fake-you/mpforge/spdx/0.1.0/186d95f7-c350-42db-ae1d-2adc856fe7a7",
+  "documentNamespace": "https://github.com/me-fake-you/mpforge/spdx/0.1.0/d8cc2fed-b59e-4747-9ddb-7b8c1f903e3d",
   "creationInfo": {
-    "created": "2026-09-08T07:17:12.944Z",
+    "created": "2026-09-08T07:34:07.196Z",
     "creators": [
       "Tool: MPForge generate-release-metadata.mjs"
     ],
