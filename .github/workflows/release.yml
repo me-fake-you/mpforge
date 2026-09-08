@@ -56,7 +56,7 @@ jobs:
           pnpm config set store-dir "$PNPM_STORE_DIR"
 
       - name: Restore project-local dependency caches
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             .cache/npm
@@ -141,7 +141,7 @@ jobs:
           pnpm config set store-dir "$env:PNPM_STORE_DIR"
 
       - name: Restore project-local dependency caches
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             .cache/npm
