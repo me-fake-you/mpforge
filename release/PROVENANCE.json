@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "subject": "MPForge v0.1.0 source candidate",
-  "source_commit": "cce3701c75e2a3bd23b0bc265ba7d1921178cb50",
+  "source_commit": "42453f75b1434b5c4c8520b54a4c2629c1cbd8fe",
   "upstream": {
     "repository": "https://github.com/tenngoxars/WeMD",
     "commit": "964525d80ef63477c3a4b0327fe2a43415ee2bad",

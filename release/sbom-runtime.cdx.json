@@ -1,10 +1,10 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.5",
-  "serialNumber": "urn:uuid:6def0e76-3e01-4c2e-834a-3748779ee512",
+  "serialNumber": "urn:uuid:2473b660-48f5-4532-a1c5-01afb2b5f604",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-09-08T07:34:47.522Z",
+    "timestamp": "2026-09-08T08:01:42.927Z",
     "tools": {
       "components": [
         {
@@ -2339,18 +2339,6 @@
     },
     {
       "type": "library",
-      "bom-ref": "pkg:npm/base64-js@1.5.1",
-      "name": "base64-js",
-      "version": "1.5.1",
-      "licenses": [
-        {
-          "expression": "MIT"
-        }
-      ],
-      "purl": "pkg:npm/base64-js@1.5.1"
-    },
-    {
-      "type": "library",
       "bom-ref": "pkg:npm/boolbase@1.0.0",
       "name": "boolbase",
       "version": "1.0.0",
@@ -2372,18 +2360,6 @@
         }
       ],
       "purl": "pkg:npm/bowser@2.13.1"
-    },
-    {
-      "type": "library",
-      "bom-ref": "pkg:npm/charenc@0.0.2",
-      "name": "charenc",
-      "version": "0.0.2",
-      "licenses": [
-        {
-          "expression": "BSD-3-Clause"
-        }
-      ],
-      "purl": "pkg:npm/charenc@0.0.2"
     },
     {
       "type": "library",
@@ -2528,18 +2504,6 @@
         }
       ],
       "purl": "pkg:npm/crelt@1.0.6"
-    },
-    {
-      "type": "library",
-      "bom-ref": "pkg:npm/crypt@0.0.2",
-      "name": "crypt",
-      "version": "0.0.2",
-      "licenses": [
-        {
-          "expression": "BSD-3-Clause"
-        }
-      ],
-      "purl": "pkg:npm/crypt@0.0.2"
     },
     {
       "type": "library",
@@ -3359,18 +3323,6 @@
     },
     {
       "type": "library",
-      "bom-ref": "pkg:npm/is-buffer@1.1.6",
-      "name": "is-buffer",
-      "version": "1.1.6",
-      "licenses": [
-        {
-          "expression": "MIT"
-        }
-      ],
-      "purl": "pkg:npm/is-buffer@1.1.6"
-    },
-    {
-      "type": "library",
       "bom-ref": "pkg:npm/is-unsafe@2.0.2",
       "name": "is-unsafe",
       "version": "2.0.2",
@@ -3695,18 +3647,6 @@
     },
     {
       "type": "library",
-      "bom-ref": "pkg:npm/md5@2.3.0",
-      "name": "md5",
-      "version": "2.3.0",
-      "licenses": [
-        {
-          "expression": "BSD-3-Clause"
-        }
-      ],
-      "purl": "pkg:npm/md5@2.3.0"
-    },
-    {
-      "type": "library",
       "bom-ref": "pkg:npm/mdurl@2.0.0",
       "name": "mdurl",
       "version": "2.0.0",
@@ -3776,18 +3716,6 @@
         }
       ],
       "purl": "pkg:npm/nth-check@2.1.1"
-    },
-    {
-      "type": "library",
-      "bom-ref": "pkg:npm/object-assign@4.1.1",
-      "name": "object-assign",
-      "version": "4.1.1",
-      "licenses": [
-        {
-          "expression": "MIT"
-        }
-      ],
-      "purl": "pkg:npm/object-assign@4.1.1"
     },
     {
       "type": "library",
@@ -4136,18 +4064,6 @@
         }
       ],
       "purl": "pkg:npm/stylis@4.3.6"
-    },
-    {
-      "type": "library",
-      "bom-ref": "pkg:npm/tiny-oss@0.5.1",
-      "name": "tiny-oss",
-      "version": "0.5.1",
-      "licenses": [
-        {
-          "expression": "MIT"
-        }
-      ],
-      "purl": "pkg:npm/tiny-oss@0.5.1"
     },
     {
       "type": "library",

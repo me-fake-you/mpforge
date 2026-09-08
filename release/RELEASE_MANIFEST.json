@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "release": "v0.1.0",
-  "source_commit": "cce3701c75e2a3bd23b0bc265ba7d1921178cb50",
+  "source_commit": "42453f75b1434b5c4c8520b54a4c2629c1cbd8fe",
   "candidate_only": true,
   "release_ready": false,
   "public_release_created": false,
@@ -10,10 +10,10 @@
     {
       "filename": "BUILD_INFO.json",
       "version": "0.1.0",
-      "source_commit": "cce3701c75e2a3bd23b0bc265ba7d1921178cb50",
+      "source_commit": "42453f75b1434b5c4c8520b54a4c2629c1cbd8fe",
       "build_platform": "platform-independent",
-      "build_time": "2026-09-08T07:34:47.522Z",
-      "sha256": "beb1a36beff088be2b2cee730cfe2276b89f879e3de1c390b01ce934d0b7d3b5",
+      "build_time": "2026-09-08T08:01:42.927Z",
+      "sha256": "c7f95646571a2972eab3ff5d28e362428e7aa7ba0c92ce5f3980733b8a19574a",
       "size": 275,
       "signed": false,
       "sbom": [
@@ -27,10 +27,10 @@
     {
       "filename": "PROVENANCE.json",
       "version": "0.1.0",
-      "source_commit": "cce3701c75e2a3bd23b0bc265ba7d1921178cb50",
+      "source_commit": "42453f75b1434b5c4c8520b54a4c2629c1cbd8fe",
       "build_platform": "platform-independent",
-      "build_time": "2026-09-08T07:34:47.522Z",
-      "sha256": "f0f82cc4dca54e7de92cdea1694cd952c9c96eb544f5f70ab120f64bf74fdbe1",
+      "build_time": "2026-09-08T08:01:42.927Z",
+      "sha256": "3faccf0fbd74ffb98e7a26c977cfe507a134e1104469d89895e16d8ce4df5b3c",
       "size": 570,
       "signed": false,
       "sbom": [
@@ -44,11 +44,11 @@
     {
       "filename": "sbom-runtime.cdx.json",
       "version": "0.1.0",
-      "source_commit": "cce3701c75e2a3bd23b0bc265ba7d1921178cb50",
+      "source_commit": "42453f75b1434b5c4c8520b54a4c2629c1cbd8fe",
       "build_platform": "platform-independent",
-      "build_time": "2026-09-08T07:34:47.522Z",
-      "sha256": "efa2b24e16843dc17bd0ab22f1dc415a2c2bbf6e9b75a73f32f637d41d87883a",
-      "size": 101239,
+      "build_time": "2026-09-08T08:01:42.927Z",
+      "sha256": "7094544e33f193ba5aa72b08acdd0b00d63d56715f7a0f6676620a4e4dbfbfa0",
+      "size": 99461,
       "signed": false,
       "sbom": [
         "sbom-source.spdx.json",
@@ -61,11 +61,11 @@
     {
       "filename": "sbom-source.spdx.json",
       "version": "0.1.0",
-      "source_commit": "cce3701c75e2a3bd23b0bc265ba7d1921178cb50",
+      "source_commit": "42453f75b1434b5c4c8520b54a4c2629c1cbd8fe",
       "build_platform": "platform-independent",
-      "build_time": "2026-09-08T07:34:47.522Z",
-      "sha256": "5f22708fca163dad28f7c1aae2928fae41ce464fa2f5752abf2492a39c76fc43",
-      "size": 655263,
+      "build_time": "2026-09-08T08:01:42.927Z",
+      "sha256": "43b20a8975530bee74431e5d8fa85cc8317aa013d5a4b6045d0496e9aa97ae1a",
+      "size": 656069,
       "signed": false,
       "sbom": [
         "sbom-source.spdx.json",
