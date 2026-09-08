@@ -18,8 +18,8 @@ apps/electron/release/
 # MPForge project-local caches and generated artifacts
 .cache/
 tmp/
-content/
-operations/
+/content/
+/operations/
 artifacts/*
 !artifacts/evidence/
 artifacts/evidence/*

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Deterministic content build</title>
+  <desc id="desc">Three source blocks enter a verified pipeline and produce one hash.</desc>
+  <metadata>Original MPForge example artwork; MIT licensed with this repository.</metadata>
+  <rect width="1200" height="630" fill="#0d1424"/>
+  <g fill="#18233b" stroke="#62e8b4" stroke-width="4">
+    <rect x="80" y="120" width="230" height="100" rx="18"/>
+    <rect x="80" y="265" width="230" height="100" rx="18"/>
+    <rect x="80" y="410" width="230" height="100" rx="18"/>
+    <rect x="465" y="205" width="280" height="220" rx="26"/>
+    <rect x="900" y="255" width="220" height="120" rx="60"/>
+  </g>
+  <g stroke="#62e8b4" stroke-width="8" fill="none" stroke-linecap="round">
+    <path d="M310 170 L465 250"/>
+    <path d="M310 315 L465 315"/>
+    <path d="M310 460 L465 380"/>
+    <path d="M745 315 L900 315"/>
+  </g>
+  <g fill="#eef5ff" font-family="Segoe UI, sans-serif" text-anchor="middle">
+    <text x="195" y="178" font-size="30">Markdown</text>
+    <text x="195" y="323" font-size="30">Assets</text>
+    <text x="195" y="468" font-size="30">Versions</text>
+    <text x="605" y="290" font-size="36">lint + render</text>
+    <text x="605" y="345" font-size="26" fill="#62e8b4">repeat and compare</text>
+    <text x="1010" y="325" font-size="34">HASH</text>
+  </g>
+</svg>
+

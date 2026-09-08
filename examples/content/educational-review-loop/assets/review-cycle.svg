@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Four-part review cycle</title>
+  <desc id="desc">Reader, evidence, structure, and release checks surround a human review center.</desc>
+  <metadata>Original MPForge example artwork; MIT licensed with this repository.</metadata>
+  <rect width="1200" height="630" fill="#f4f8ff"/>
+  <circle cx="600" cy="315" r="105" fill="#174a8b"/>
+  <g fill="#dceaff" stroke="#174a8b" stroke-width="4">
+    <rect x="485" y="60" width="230" height="90" rx="20"/>
+    <rect x="830" y="270" width="230" height="90" rx="20"/>
+    <rect x="485" y="480" width="230" height="90" rx="20"/>
+    <rect x="140" y="270" width="230" height="90" rx="20"/>
+  </g>
+  <g stroke="#5d85ba" stroke-width="8" fill="none" stroke-linecap="round">
+    <path d="M600 150 L600 210"/>
+    <path d="M705 315 L830 315"/>
+    <path d="M600 420 L600 480"/>
+    <path d="M370 315 L495 315"/>
+  </g>
+  <g font-family="Segoe UI, sans-serif" text-anchor="middle">
+    <text x="600" y="325" font-size="38" fill="#ffffff">Human review</text>
+    <text x="600" y="116" font-size="30" fill="#12345f">Reader</text>
+    <text x="945" y="326" font-size="30" fill="#12345f">Evidence</text>
+    <text x="600" y="536" font-size="30" fill="#12345f">Structure</text>
+    <text x="255" y="326" font-size="30" fill="#12345f">Release</text>
+  </g>
+</svg>
+

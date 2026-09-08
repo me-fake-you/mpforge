@@ -1,0 +1,2 @@
+{"schema":"mpforge.audit/v1","id":"a3333333-3333-4333-8333-333333333333","timestamp":"2026-08-31T00:00:00.000Z","actor":{"kind":"human","id":"example-author"},"action":"article.created","reason":"Created as a public MPForge example"}
+
