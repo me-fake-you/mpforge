@@ -3,9 +3,9 @@
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
   "name": "MPForge-source-0.1.0",
-  "documentNamespace": "https://github.com/me-fake-you/mpforge/spdx/0.1.0/d8cc2fed-b59e-4747-9ddb-7b8c1f903e3d",
+  "documentNamespace": "https://github.com/me-fake-you/mpforge/spdx/0.1.0/d0678ee7-78b0-41be-86b5-992fd818e385",
   "creationInfo": {
-    "created": "2026-09-08T07:34:07.196Z",
+    "created": "2026-09-08T07:34:47.522Z",
     "creators": [
       "Tool: MPForge generate-release-metadata.mjs"
     ],
@@ -22,7 +22,7 @@
       "downloadLocation": "NONE",
       "filesAnalyzed": true,
       "packageVerificationCode": {
-        "packageVerificationCodeValue": "318ef9d45caf42e75856ee6f49697938a0fefed0"
+        "packageVerificationCodeValue": "6d93182f9823321d09db3a37dffd62409021434f"
       },
       "licenseConcluded": "MIT",
       "licenseDeclared": "MIT",
@@ -706,11 +706,11 @@
       "checksums": [
         {
           "algorithm": "SHA1",
-          "checksumValue": "9aba688041178ce4a4794588f9c09028fedbd391"
+          "checksumValue": "922f174a4429c8733bc0c69bbc171b108631a044"
         },
         {
           "algorithm": "SHA256",
-          "checksumValue": "f7b209fcce6a4b32515e9c617a5c22659f505a0144a24746d88a17c3dd82412f"
+          "checksumValue": "129d0e18431dde2624fcd7bc83e026371a758917a74a4ccf8fee46dc3101171d"
         }
       ],
       "licenseConcluded": "MIT",
@@ -744,11 +744,11 @@
       "checksums": [
         {
           "algorithm": "SHA1",
-          "checksumValue": "cabab78b3100f278f3d9feccd160212ed3724186"
+          "checksumValue": "6dd7930d757aebb78a2628fc02e54aa41dd861cd"
         },
         {
           "algorithm": "SHA256",
-          "checksumValue": "9932845805396980d73766e795941fc4e2739cf3c13ee9337371fb9867445198"
+          "checksumValue": "02bfebb2dc5de6de54cfdc5ffe3638bda5ef9a0e4b344dd0302a193b5f7050bf"
         }
       ],
       "licenseConcluded": "MIT",
@@ -763,11 +763,11 @@
       "checksums": [
         {
           "algorithm": "SHA1",
-          "checksumValue": "811d891404d3c8458278103efd324be1c5d0c54a"
+          "checksumValue": "28ddab319375a21aa1417ffc3a48ebc71e2fc80e"
         },
         {
           "algorithm": "SHA256",
-          "checksumValue": "641ec452ef452bc98fc455bf18730a55b203a56bbbfb0296df598fb2037f0449"
+          "checksumValue": "0aea4a5e92d1d1fd86b484479c768f955374e18b2b9997e2134ae09a009091ea"
         }
       ],
       "licenseConcluded": "MIT",
@@ -14443,11 +14443,11 @@
       "checksums": [
         {
           "algorithm": "SHA1",
-          "checksumValue": "a60c1de8eed3f610b30f8de44a2a737b058102d4"
+          "checksumValue": "19810dd4f5814218d919964d025a55a1a1499c05"
         },
         {
           "algorithm": "SHA256",
-          "checksumValue": "ce2adc27c7c0de089f6115773c37760bd6254bbcd8b499f3522af4b2ef6e65b1"
+          "checksumValue": "e77141d2bea86fc433ae918403629c41a382314c2d211d8ab6b5c6b968fb0dba"
         }
       ],
       "licenseConcluded": "MIT",
@@ -14937,11 +14937,11 @@
       "checksums": [
         {
           "algorithm": "SHA1",
-          "checksumValue": "11d0f25a3ac608a46f9179451bc4a29feea05786"
+          "checksumValue": "3501be6699aa95d64847368ba7fa7175cbe8cf71"
         },
         {
           "algorithm": "SHA256",
-          "checksumValue": "ebd473540b5f27d14b9dc7f5b2af1883a098904923ed63940e1a5a0b2906166d"
+          "checksumValue": "289b79bea0cfe584bbbf2d1a9ae5b67409a99523e1a2d78d1f2eff62f430e7c4"
         }
       ],
       "licenseConcluded": "MIT",

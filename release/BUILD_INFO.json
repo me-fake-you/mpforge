@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "version": "0.1.0",
-  "source_commit": "0a9588871c6ad201022e8f781c4fecc6a8169370",
-  "generated_at": "2026-09-08T07:17:12.944Z",
+  "source_commit": "cce3701c75e2a3bd23b0bc265ba7d1921178cb50",
+  "generated_at": "2026-09-08T07:34:47.522Z",
   "build_platform": "win32-x64",
   "signed": false,
   "reproducible": false,
