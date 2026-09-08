@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "version": "0.1.0",
+  "source_commit": "0a9588871c6ad201022e8f781c4fecc6a8169370",
+  "generated_at": "2026-09-08T07:17:12.944Z",
+  "build_platform": "win32-x64",
+  "signed": false,
+  "reproducible": false,
+  "status": "SOURCE_CANDIDATE_METADATA"
+}
