@@ -288,7 +288,7 @@ jobs:
           git diff --exit-code
 
       - name: Upload verified candidate without publishing a Release
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mpforge-v0.1.0-candidate-${{ github.sha }}
           path: release/staging/
