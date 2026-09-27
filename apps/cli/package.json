@@ -44,7 +44,7 @@
     "@mpforge/side-effect-gate": "workspace:*",
     "@mpforge/themes": "workspace:*",
     "@mpforge/wechat-adapter": "workspace:*",
-    "playwright-core": "1.62.1"
+    "playwright-core": "1.63.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
